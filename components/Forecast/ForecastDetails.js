@@ -1,6 +1,7 @@
 import React from "react";
 import { View, StyleSheet, Text } from "react-native";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
+import colors from "../../constants/colors";
 
 const ForecastDetails = (props) => (
   <View style={styles.main}>
@@ -53,7 +54,7 @@ const styles = StyleSheet.create({
   },
   label: {
     fontFamily: "lexend-semi-bold",
-    color: "#565A5D",
+    color: colors.mainTextColor,
     maxWidth: 100,
     textAlign: "center",
   },

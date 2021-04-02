@@ -1,13 +1,19 @@
 import "react-native-gesture-handler";
 import React from "react";
+import { createStore, applyMiddleware, compose } from "redux";
+import { Provider } from "react-redux";
+import thunk from "redux-thunk";
+import reducer from "./store/reducers/reducer";
 import { StyleSheet } from "react-native";
-import { SafeAreaProvider } from "react-native-safe-area-context";
 import { enableScreens } from "react-native-screens";
 enableScreens();
 import { NavigationContainer } from "@react-navigation/native";
 import { useFonts } from "expo-font";
 import AppLoading from "expo-app-loading";
 import Navigator from "./navigation/navigator";
+
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+const store = createStore(reducer, composeEnhancers(applyMiddleware(thunk)));
 
 export default function App() {
   let [fontsLoaded] = useFonts({
@@ -21,11 +27,11 @@ export default function App() {
   }
 
   return (
-    <NavigationContainer>
-      <SafeAreaProvider>
+    <Provider store={store}>
+      <NavigationContainer>
         <Navigator />
-      </SafeAreaProvider>
-    </NavigationContainer>
+      </NavigationContainer>
+    </Provider>
   );
 }
 

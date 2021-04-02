@@ -4,14 +4,23 @@ import { View, StyleSheet, Text, ScrollView, Dimensions } from "react-native";
 import ForecastMain from "../components/Forecast/ForecastMain";
 import ForecastDetails from "../components/Forecast/ForecastDetails";
 import Forecast from "../components/Forecast/Forecast";
+import colors from "../constants/colors";
 
-const ForecastScreen = () => {
+const ForecastScreen = ({ route }) => {
+  const { forecast } = route.params;
+  //console.log(forecast);
+
   return (
     <ScrollView style={styles.screen}>
-      <ForecastMain />
+      <ForecastMain
+        temperature={forecast.current.temp}
+        status={forecast.current.weather[0].main}
+        countryCode={forecast.countryCode}
+        city={forecast.city}
+      />
       <View style={styles.more}>
         <Text style={styles.heading}>Hourly</Text>
-        <Forecast />
+        <Forecast forecast={forecast.hourly} />
         <Text style={styles.heading}>Daily</Text>
         <Forecast daily />
         <Text style={styles.heading}>Details</Text>
@@ -21,18 +30,23 @@ const ForecastScreen = () => {
   );
 };
 
+let margin = Dimensions.get("window").height - 695;
+if (margin < 0) {
+  margin = 10;
+}
+
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
-    backgroundColor: "#F3F9FE",
+    backgroundColor: colors.backgroundColor,
     //paddingHorizontal: 15,
   },
   more: {
-    marginTop: Dimensions.get("window").height - 695,
+    marginTop: margin,
     paddingHorizontal: 15,
   },
   heading: {
-    color: "#565A5D",
+    color: colors.mainTextColor,
     fontFamily: "lexend-semi-bold",
     fontSize: 20,
   },

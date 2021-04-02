@@ -1,8 +1,9 @@
 import React from "react";
 import { View, StyleSheet, Text } from "react-native";
 import LottieView from "lottie-react-native";
+import colors from "../../constants/colors";
 
-const ForecastMain = (props) => (
+const ForecastMain = ({ temperature, city, countryCode, status }) => (
   <View style={styles.main}>
     <LottieView
       source={require("../../assets/lottie/foggy.json")}
@@ -11,34 +12,36 @@ const ForecastMain = (props) => (
       style={styles.icon}
     />
     <View style={styles.temperatureContainer}>
-      <Text style={styles.temperature}>32</Text>
+      <Text style={styles.temperature}>{temperature.toFixed(0)}</Text>
       <Text style={styles.celsius}>°c</Text>
     </View>
-    <Text style={styles.location}>London, UK</Text>
-    <Text style={styles.status}>Windy</Text>
+    <Text style={styles.location}>
+      {city}, {countryCode}
+    </Text>
+    <Text style={styles.status}>{status}</Text>
   </View>
 );
 
 const styles = StyleSheet.create({
   location: {
-    color: "#565A5D",
+    color: colors.mainTextColor,
     fontFamily: "lexend-regular",
     fontSize: 20,
   },
   status: {
-    color: "#565A5D",
+    color: colors.mainTextColor,
     fontFamily: "lexend-regular",
     fontSize: 20,
   },
   temperature: {
-    color: "#565A5D",
+    color: colors.mainTextColor,
     fontSize: 60,
     fontFamily: "lexend-semi-bold",
   },
   celsius: {
     fontFamily: "lexend-light",
     fontSize: 40,
-    color: "#565A5D",
+    color: colors.mainTextColor,
   },
   temperatureContainer: {
     flexDirection: "row",

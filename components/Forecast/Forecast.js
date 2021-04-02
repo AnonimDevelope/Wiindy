@@ -1,14 +1,23 @@
 import React from "react";
-import { View, StyleSheet } from "react-native";
+import { View, StyleSheet, FlatList } from "react-native";
 import ForecastItem from "./ForecastItem";
 
-const Forecast = () => {
+const Forecast = ({ forecast }) => {
+  //console.log(forecast);
   return (
     <View style={styles.main}>
-      <ForecastItem />
-      <ForecastItem />
-      <ForecastItem />
-      <ForecastItem />
+      <FlatList
+        data={forecast}
+        keyExtractor={(item) => `${item.dt}`}
+        renderItem={(itemData) => (
+          <ForecastItem
+            timestamp={itemData.item.dt}
+            temperature={itemData.item.temp}
+            status={itemData.item.weather[0].main}
+          />
+        )}
+        horizontal
+      />
     </View>
   );
 };
