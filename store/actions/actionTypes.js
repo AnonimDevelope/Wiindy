@@ -1,2 +1,2 @@
-export const ADD_LOCATION = "ADD_LOCATION";
+export const SET_LOCATIONS = "SET_LOCATIONS";
 export const ADD_FORECAST = "ADD_FORECAST";

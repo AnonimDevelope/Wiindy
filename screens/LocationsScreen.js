@@ -16,7 +16,7 @@ const LocationsScreen = ({ navigation }) => {
         keyExtractor={(item) => `${item.id}`}
         renderItem={(itemData) => (
           <LocationItem
-            location={`${itemData.item.city}, ${itemData.item.countryCode}`}
+            location={`${itemData.item.city}, ${itemData.item.country}`}
             onPress={() =>
               navigation.navigate("Forecast", {
                 forecast: forecast.find(

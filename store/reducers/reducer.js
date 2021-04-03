@@ -5,15 +5,15 @@ const initialState = {
   locations: [],
 };
 
-const addLocation = (state, location) => {
-  const newState = { ...state, locations: [location, ...state.locations] };
-  const item = state.locations.find((item) => item.id === location.id);
-  if (item) {
-    const index = newState.locations.indexOf(item);
-    newState.locations.splice(index, 1);
-  }
-  return newState;
-};
+// const addLocation = (state, location) => {
+//   const newState = { ...state, locations: [location, ...state.locations] };
+//   const item = state.locations.find((item) => item.id === location.id);
+//   if (item) {
+//     const index = newState.locations.indexOf(item);
+//     newState.locations.splice(index, 1);
+//   }
+//   return newState;
+// };
 
 const addForecast = (state, forecast) => {
   const newState = { ...state, forecast: [forecast, ...state.forecast] };
@@ -28,8 +28,8 @@ const addForecast = (state, forecast) => {
 
 export default (state = initialState, action) => {
   switch (action.type) {
-    case actionTypes.ADD_LOCATION:
-      return addLocation(state, action.location);
+    case actionTypes.SET_LOCATIONS:
+      return { ...state, locations: action.locations };
     case actionTypes.ADD_FORECAST:
       return addForecast(state, action.forecast);
 

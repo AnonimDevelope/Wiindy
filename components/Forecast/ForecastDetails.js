@@ -3,20 +3,20 @@ import { View, StyleSheet, Text } from "react-native";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import colors from "../../constants/colors";
 
-const ForecastDetails = (props) => (
+const ForecastDetails = ({ humidity, windSpeed, cloudiness }) => (
   <View style={styles.main}>
     <View style={styles.sideContainer}>
-      <Text style={styles.value}>56</Text>
+      <Text style={styles.value}>{windSpeed}</Text>
       <Icon name="weather-windy" size={35} />
-      <Text style={styles.label}>Wind Flow</Text>
+      <Text style={styles.label}>Wind Speed</Text>
     </View>
     <View style={styles.centerContainer}>
-      <Text style={styles.value}>56</Text>
-      <Icon name="weather-pouring" size={35} />
-      <Text style={styles.label}>Precipitation Chance</Text>
+      <Text style={styles.value}>{cloudiness}</Text>
+      <Icon name="cloud-outline" size={35} />
+      <Text style={styles.label}>Cloudiness</Text>
     </View>
     <View style={styles.sideContainer}>
-      <Text style={styles.value}>56</Text>
+      <Text style={styles.value}>{humidity}</Text>
       <Icon name="water-percent" size={35} />
       <Text style={styles.label}>Humidity</Text>
     </View>

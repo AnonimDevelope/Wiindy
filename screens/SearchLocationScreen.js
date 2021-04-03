@@ -9,7 +9,8 @@ import {
   TouchableWithoutFeedback,
 } from "react-native";
 import { useDispatch } from "react-redux";
-import { addLocation, addForecast } from "../store/actions/actions";
+import { addForecast, setLocations } from "../store/actions/actions";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import colors from "../constants/colors";
 
 import IconButton from "../components/UI/IconButton";
@@ -21,32 +22,32 @@ const SearchLocationScreen = ({ navigation }) => {
 
   const dispatch = useDispatch();
 
-  React.useLayoutEffect(() => {
-    navigation.setOptions({
-      headerTitle: () => (
-        <TextInput
-          underlineColorAndroid="transparent"
-          placeholder="Search"
-          style={styles.headerSearch}
-          autoCorrect={false}
-          autoFocus
-          value={searchValue}
-          onChangeText={(text) => setSearchValue(text)}
-          onSubmitEditing={findCity}
-        />
-      ),
-      headerRight: () => (
-        <IconButton
-          name="magnify"
-          style={{ marginRight: 15 }}
-          onPress={() => {
-            findCity();
-            Keyboard.dismiss();
-          }}
-        />
-      ),
-    });
-  });
+  // React.useLayoutEffect(() => {
+  //   navigation.setOptions({
+  //     headerTitle: () => (
+  //       <TextInput
+  //         underlineColorAndroid="transparent"
+  //         placeholder="Search"
+  //         style={styles.headerSearch}
+  //         autoCorrect={false}
+  //         autoFocus
+  //         value={searchValue}
+  //         onChangeText={(text) => setSearchValue(text)}
+  //         onSubmitEditing={findCity}
+  //       />
+  //     ),
+  //     headerRight: () => (
+  //       <IconButton
+  //         name="magnify"
+  //         style={{ marginRight: 15 }}
+  //         onPress={() => {
+  //           findCity();
+  //           Keyboard.dismiss();
+  //         }}
+  //       />
+  //     ),
+  //   });
+  // });
 
   const findCity = async () => {
     const response = await fetch(
@@ -63,6 +64,19 @@ const SearchLocationScreen = ({ navigation }) => {
 
     const data = await response.json();
     setSities(data.data);
+  };
+
+  const addLocation = async (location) => {
+    const value = await AsyncStorage.getItem("locations");
+    if (value !== null) {
+      const modValue = { ...value, data: [location, ...value.data] };
+      await AsyncStorage.setItem("locations", JSON.stringify(modValue));
+      dispatch(setLocations(modValue));
+    } else {
+      const newValue = { data: [location] };
+      await AsyncStorage.setItem("locations", JSON.stringify(newValue));
+      dispatch(setLocations(newValue));
+    }
   };
 
   if (cities.length === 0) {
@@ -85,7 +99,7 @@ const SearchLocationScreen = ({ navigation }) => {
           <LocationItem
             location={`${itemData.item.city}, ${itemData.item.country}`}
             onPress={() => {
-              dispatch(addLocation(itemData.item));
+              addLocation(itemData.item);
               dispatch(addForecast(itemData.item));
             }}
           />

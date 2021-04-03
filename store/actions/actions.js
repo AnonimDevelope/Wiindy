@@ -1,9 +1,9 @@
 import * as actionTypes from "./actionTypes";
 
-export const addLocation = (location) => {
+export const setLocations = (locations) => {
   return {
-    type: actionTypes.ADD_LOCATION,
-    location,
+    type: actionTypes.SET_LOCATIONS,
+    locations,
   };
 };
 

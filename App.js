@@ -1,7 +1,8 @@
 import "react-native-gesture-handler";
-import React from "react";
+import React, { useEffect } from "react";
 import { createStore, applyMiddleware, compose } from "redux";
-import { Provider } from "react-redux";
+import { Provider, useDispatch } from "react-redux";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import thunk from "redux-thunk";
 import reducer from "./store/reducers/reducer";
 import { StyleSheet } from "react-native";
@@ -11,6 +12,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { useFonts } from "expo-font";
 import AppLoading from "expo-app-loading";
 import Navigator from "./navigation/navigator";
+import { setLocations } from "./store/actions/actions";
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const store = createStore(reducer, composeEnhancers(applyMiddleware(thunk)));
@@ -28,12 +30,32 @@ export default function App() {
 
   return (
     <Provider store={store}>
-      <NavigationContainer>
-        <Navigator />
-      </NavigationContainer>
+      <ReduxAccess>
+        <NavigationContainer>
+          <Navigator />
+        </NavigationContainer>
+      </ReduxAccess>
     </Provider>
   );
 }
+
+const ReduxAccess = ({ children }) => {
+  //  Used for accessing redux store in root component
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    const getLocations = async () => {
+      const locations = await AsyncStorage.getItem("locations");
+      if (locations !== null) {
+        dispatch(setLocations(JSON.parse(locations).data));
+      }
+    };
+    getLocations();
+  }, []);
+
+  return children;
+};
 
 const styles = StyleSheet.create({
   screen: {
