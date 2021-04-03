@@ -7,31 +7,29 @@ import Forecast from "../components/Forecast/Forecast";
 import colors from "../constants/colors";
 
 const ForecastScreen = ({ route }) => {
-  //const { forecast } = route.params;
-  //console.log(forecast);
+  const { forecast } = route.params;
 
   return (
-    // <ScrollView style={styles.screen}>
-    //   <ForecastMain
-    //     temperature={forecast.current.temp}
-    //     status={forecast.current.weather[0].main}
-    //     countryCode={forecast.countryCode}
-    //     city={forecast.city}
-    //   />
-    //   <View style={styles.more}>
-    //     <Text style={styles.heading}>Hourly</Text>
-    //     <Forecast forecast={forecast.hourly} />
-    //     <Text style={styles.heading}>Daily</Text>
-    //     <Forecast daily forecast={forecast.daily} />
-    //     <Text style={styles.heading}>Details</Text>
-    //     <ForecastDetails
-    //       humidity={forecast.current.humidity}
-    //       windSpeed={forecast.current.wind_speed}
-    //       cloudiness={forecast.current.clouds}
-    //     />
-    //   </View>
-    // </ScrollView>
-    <View></View>
+    <ScrollView style={styles.screen}>
+      <ForecastMain
+        temperature={forecast.current.temp}
+        status={forecast.current.weather[0].main}
+        countryCode={forecast.countryCode}
+        city={forecast.city}
+      />
+      <View style={styles.more}>
+        <Text style={styles.heading}>Hourly</Text>
+        <Forecast forecast={forecast.hourly} />
+        <Text style={styles.heading}>Daily</Text>
+        <Forecast daily forecast={forecast.daily} />
+        <Text style={styles.heading}>Details</Text>
+        <ForecastDetails
+          humidity={forecast.current.humidity}
+          windSpeed={forecast.current.wind_speed}
+          cloudiness={forecast.current.clouds}
+        />
+      </View>
+    </ScrollView>
   );
 };
 
@@ -44,7 +42,6 @@ const styles = StyleSheet.create({
   screen: {
     flex: 1,
     backgroundColor: colors.backgroundColor,
-    //paddingHorizontal: 15,
   },
   more: {
     marginTop: margin,

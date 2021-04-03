@@ -5,14 +5,13 @@ import { Provider, useDispatch } from "react-redux";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import thunk from "redux-thunk";
 import reducer from "./store/reducers/reducer";
-import { StyleSheet } from "react-native";
 import { enableScreens } from "react-native-screens";
 enableScreens();
 import { NavigationContainer } from "@react-navigation/native";
 import { useFonts } from "expo-font";
 import AppLoading from "expo-app-loading";
 import Navigator from "./navigation/navigator";
-import { setLocations } from "./store/actions/actions";
+import { setLocations, setForecast } from "./store/actions/actions";
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const store = createStore(reducer, composeEnhancers(applyMiddleware(thunk)));
@@ -51,17 +50,15 @@ const ReduxAccess = ({ children }) => {
         dispatch(setLocations(JSON.parse(locations).data));
       }
     };
+    const getForecasts = async () => {
+      const forecasts = await AsyncStorage.getItem("forecast");
+      if (forecasts !== null) {
+        dispatch(setForecast(JSON.parse(forecasts).data));
+      }
+    };
     getLocations();
+    getForecasts();
   }, []);
 
   return children;
 };
-
-const styles = StyleSheet.create({
-  screen: {
-    flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-});

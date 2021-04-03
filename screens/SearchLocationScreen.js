@@ -9,7 +9,7 @@ import {
   TouchableWithoutFeedback,
 } from "react-native";
 import { useDispatch } from "react-redux";
-import { addForecast, setLocations } from "../store/actions/actions";
+import { getForecast, setLocations } from "../store/actions/actions";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import colors from "../constants/colors";
 
@@ -22,34 +22,10 @@ const SearchLocationScreen = ({ navigation }) => {
 
   const dispatch = useDispatch();
 
-  // React.useLayoutEffect(() => {
-  //   navigation.setOptions({
-  //     headerTitle: () => (
-  //       <TextInput
-  //         underlineColorAndroid="transparent"
-  //         placeholder="Search"
-  //         style={styles.headerSearch}
-  //         autoCorrect={false}
-  //         autoFocus
-  //         value={searchValue}
-  //         onChangeText={(text) => setSearchValue(text)}
-  //         onSubmitEditing={findCity}
-  //       />
-  //     ),
-  //     headerRight: () => (
-  //       <IconButton
-  //         name="magnify"
-  //         style={{ marginRight: 15 }}
-  //         onPress={() => {
-  //           findCity();
-  //           Keyboard.dismiss();
-  //         }}
-  //       />
-  //     ),
-  //   });
-  // });
-
   const findCity = async () => {
+    if (searchValue.trim() === "") {
+      return;
+    }
     const response = await fetch(
       `https://wft-geo-db.p.rapidapi.com/v1/geo/cities?limit=10&namePrefix=${searchValue}`,
       {
@@ -69,43 +45,63 @@ const SearchLocationScreen = ({ navigation }) => {
   const addLocation = async (location) => {
     const value = await AsyncStorage.getItem("locations");
     if (value !== null) {
-      const modValue = { ...value, data: [location, ...value.data] };
+      const modValue = {
+        ...JSON.parse(value),
+        data: [location, ...JSON.parse(value).data],
+      };
       await AsyncStorage.setItem("locations", JSON.stringify(modValue));
-      dispatch(setLocations(modValue));
+      dispatch(setLocations(modValue.data));
     } else {
       const newValue = { data: [location] };
       await AsyncStorage.setItem("locations", JSON.stringify(newValue));
-      dispatch(setLocations(newValue));
+      dispatch(setLocations(newValue.data));
     }
   };
 
-  if (cities.length === 0) {
-    return (
-      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-        <View style={styles.screen}>
-          <Text style={styles.emptyText}>Search your City</Text>
-        </View>
-      </TouchableWithoutFeedback>
-    );
-  }
-
   return (
-    <View style={styles.screen}>
-      <FlatList
-        contentContainerStyle={{ alignItems: "center" }}
-        keyExtractor={(item) => `${item.id}`}
-        data={cities}
-        renderItem={(itemData) => (
-          <LocationItem
-            location={`${itemData.item.city}, ${itemData.item.country}`}
-            onPress={() => {
-              addLocation(itemData.item);
-              dispatch(addForecast(itemData.item));
-            }}
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+      <View style={styles.screen}>
+        <View style={styles.searchWrapper}>
+          <View style={styles.search}>
+            <TextInput
+              underlineColorAndroid="transparent"
+              placeholder="Search"
+              style={styles.headerSearch}
+              autoCorrect={false}
+              value={searchValue}
+              onChangeText={(text) => setSearchValue(text)}
+              onSubmitEditing={findCity}
+            />
+            <IconButton
+              name="magnify"
+              size={20}
+              color={colors.mainTextColor}
+              innerStyle={styles.searchIconInner}
+              onPress={findCity}
+            />
+          </View>
+        </View>
+        {cities.length === 0 ? (
+          <Text style={styles.emptyText}>Search your City</Text>
+        ) : (
+          <FlatList
+            contentContainerStyle={styles.list}
+            keyExtractor={(item) => `${item.id}`}
+            data={cities}
+            renderItem={(itemData) => (
+              <LocationItem
+                location={`${itemData.item.city}, ${itemData.item.country}`}
+                onPress={() => {
+                  addLocation(itemData.item);
+                  dispatch(getForecast(itemData.item));
+                  navigation.goBack();
+                }}
+              />
+            )}
           />
         )}
-      />
-    </View>
+      </View>
+    </TouchableWithoutFeedback>
   );
 };
 
@@ -113,16 +109,38 @@ const styles = StyleSheet.create({
   screen: {
     flex: 1,
     backgroundColor: colors.backgroundColor,
-    alignItems: "center",
+    paddingTop: 70,
   },
   headerSearch: {
-    //borderBottomWidth: 1,
     fontSize: 18,
     fontFamily: "lexend-regular",
     padding: 7,
     paddingLeft: 3,
-    elevation: 4,
+    borderRadius: 3,
+    width: "100%",
+  },
+  searchWrapper: {
     backgroundColor: "white",
+    alignItems: "center",
+    elevation: 4,
+    borderBottomLeftRadius: 40,
+    borderBottomRightRadius: 40,
+    position: "absolute",
+    top: 0,
+    left: 0,
+    width: "100%",
+  },
+  search: {
+    width: "80%",
+    maxWidth: 350,
+    backgroundColor: "white",
+    flexDirection: "row",
+    justifyContent: "space-around",
+    marginVertical: 20,
+    elevation: 4,
+    paddingRight: 15,
+    paddingLeft: 15,
+    alignItems: "center",
     borderRadius: 3,
   },
   emptyText: {
@@ -130,6 +148,13 @@ const styles = StyleSheet.create({
     color: colors.mainTextColor,
     fontSize: 20,
     marginTop: 10,
+    textAlign: "center",
+    marginTop: 90,
+  },
+  list: {
+    alignItems: "center",
+    marginTop: 13,
+    paddingBottom: 10,
   },
 });
 

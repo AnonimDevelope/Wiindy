@@ -19,16 +19,12 @@ const IconButton = ({
   color = colors.mainTextColor,
   style,
   onPress,
+  innerStyle = { padding: 10, borderRadius: 50 },
 }) => {
   return (
     <View style={{ borderRadius: 50, overflow: "hidden", ...style }}>
       <Touchable onPress={onPress}>
-        <View
-          style={{
-            padding: 10,
-            borderRadius: 50,
-          }}
-        >
+        <View style={innerStyle}>
           <Icon name={name} size={size} color={color} />
         </View>
       </Touchable>
