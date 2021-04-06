@@ -11,7 +11,11 @@ import { NavigationContainer } from "@react-navigation/native";
 import { useFonts } from "expo-font";
 import AppLoading from "expo-app-loading";
 import Navigator from "./navigation/navigator";
-import { setLocations, setForecast } from "./store/actions/actions";
+import {
+  setLocations,
+  setForecast,
+  checkForecast,
+} from "./store/actions/actions";
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const store = createStore(reducer, composeEnhancers(applyMiddleware(thunk)));
@@ -53,7 +57,9 @@ const ReduxAccess = ({ children }) => {
     const getForecasts = async () => {
       const forecasts = await AsyncStorage.getItem("forecast");
       if (forecasts !== null) {
-        dispatch(setForecast(JSON.parse(forecasts).data));
+        const forecastArray = JSON.parse(forecasts).data;
+        dispatch(setForecast(forecastArray));
+        dispatch(checkForecast(forecastArray));
       }
     };
     getLocations();

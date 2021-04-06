@@ -1,9 +1,10 @@
-import React from "react";
-import { View, StyleSheet, Text } from "react-native";
+import React, { useEffect, useRef } from "react";
+import { View, StyleSheet, Text, Image } from "react-native";
 import LottieView from "lottie-react-native";
 import colors from "../../constants/colors";
+import getIcon from "../../assets/lottie/getIcon";
 
-const ForecastItem = ({ temperature, status, timestamp, daily }) => {
+const ForecastItem = ({ temperature, id, timestamp, daily, iconId }) => {
   const date = new Date(timestamp * 1000);
   const hours = date.getHours();
   let day = date.getDate();
@@ -29,6 +30,8 @@ const ForecastItem = ({ temperature, status, timestamp, daily }) => {
   ];
   const currentWeekDay = weekDays[date.getDay()];
 
+  const icon = getIcon(iconId, id, true);
+
   return (
     <React.Fragment>
       {hours === 0 && !daily && (
@@ -41,12 +44,11 @@ const ForecastItem = ({ temperature, status, timestamp, daily }) => {
           <Text style={styles.temp}>{temperature.toFixed(0)}</Text>
           <Text style={styles.itemText}>°c</Text>
         </View>
-        <LottieView
-          source={require("../../assets/lottie/foggy.json")}
-          //loop
-          //autoPlay
-          style={styles.icon}
-        />
+        {icon.animate === true ? (
+          <Image source={icon.icon} style={styles.icon} />
+        ) : (
+          <LottieView source={icon.icon} style={styles.icon} />
+        )}
         {daily ? (
           <Text style={styles.itemTextDaily}>
             {currentWeekDay}, {day}

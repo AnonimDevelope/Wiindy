@@ -14,11 +14,13 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import colors from "../constants/colors";
 
 import IconButton from "../components/UI/IconButton";
-import LocationItem from "../components/Locations/LocationItem";
+import SearchItem from "../components/Locations/SearchItem";
+import Activity from "../components/UI/Activity";
 
 const SearchLocationScreen = ({ navigation }) => {
   const [searchValue, setSearchValue] = useState("");
   const [cities, setSities] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   const dispatch = useDispatch();
 
@@ -26,6 +28,7 @@ const SearchLocationScreen = ({ navigation }) => {
     if (searchValue.trim() === "") {
       return;
     }
+    setIsLoading(true);
     const response = await fetch(
       `https://wft-geo-db.p.rapidapi.com/v1/geo/cities?limit=10&namePrefix=${searchValue}`,
       {
@@ -40,14 +43,19 @@ const SearchLocationScreen = ({ navigation }) => {
 
     const data = await response.json();
     setSities(data.data);
+    setIsLoading(false);
   };
 
   const addLocation = async (location) => {
     const value = await AsyncStorage.getItem("locations");
     if (value !== null) {
+      const locationsArr = [...JSON.parse(value).data];
+      const index = locationsArr.find((loc) => loc.city === location.city);
+      if (index) {
+        return;
+      }
       const modValue = {
-        ...JSON.parse(value),
-        data: [location, ...JSON.parse(value).data],
+        data: [location, ...locationsArr],
       };
       await AsyncStorage.setItem("locations", JSON.stringify(modValue));
       dispatch(setLocations(modValue.data));
@@ -57,6 +65,32 @@ const SearchLocationScreen = ({ navigation }) => {
       dispatch(setLocations(newValue.data));
     }
   };
+
+  let list = (
+    <FlatList
+      contentContainerStyle={styles.list}
+      keyExtractor={(item) => `${item.id}`}
+      data={cities}
+      renderItem={(itemData) => (
+        <SearchItem
+          location={`${itemData.item.city}, ${itemData.item.country}`}
+          onPress={() => {
+            addLocation(itemData.item);
+            dispatch(getForecast(itemData.item));
+            navigation.goBack();
+          }}
+        />
+      )}
+    />
+  );
+
+  if (cities === undefined || cities.length === 0) {
+    list = <Text style={styles.emptyText}>Search your City</Text>;
+  }
+
+  if (isLoading) {
+    list = <Activity />;
+  }
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
@@ -81,25 +115,7 @@ const SearchLocationScreen = ({ navigation }) => {
             />
           </View>
         </View>
-        {cities.length === 0 ? (
-          <Text style={styles.emptyText}>Search your City</Text>
-        ) : (
-          <FlatList
-            contentContainerStyle={styles.list}
-            keyExtractor={(item) => `${item.id}`}
-            data={cities}
-            renderItem={(itemData) => (
-              <LocationItem
-                location={`${itemData.item.city}, ${itemData.item.country}`}
-                onPress={() => {
-                  addLocation(itemData.item);
-                  dispatch(getForecast(itemData.item));
-                  navigation.goBack();
-                }}
-              />
-            )}
-          />
-        )}
+        {list}
       </View>
     </TouchableWithoutFeedback>
   );
@@ -147,9 +163,8 @@ const styles = StyleSheet.create({
     fontFamily: "lexend-regular",
     color: colors.mainTextColor,
     fontSize: 20,
-    marginTop: 10,
     textAlign: "center",
-    marginTop: 90,
+    marginTop: 15,
   },
   list: {
     alignItems: "center",

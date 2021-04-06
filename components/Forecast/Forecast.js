@@ -3,7 +3,6 @@ import { View, StyleSheet, FlatList } from "react-native";
 import ForecastItem from "./ForecastItem";
 
 const Forecast = ({ forecast, daily }) => {
-  //console.log(forecast);
   return (
     <View style={styles.main}>
       {daily ? (
@@ -16,6 +15,8 @@ const Forecast = ({ forecast, daily }) => {
               temperature={itemData.item.temp.day}
               status={itemData.item.weather[0].main}
               daily={daily}
+              iconId={itemData.item.weather[0].icon}
+              id={itemData.item.weather[0].id}
             />
           )}
           horizontal
@@ -30,6 +31,8 @@ const Forecast = ({ forecast, daily }) => {
               temperature={itemData.item.temp}
               status={itemData.item.weather[0].main}
               daily={daily}
+              iconId={itemData.item.weather[0].icon}
+              id={itemData.item.weather[0].id}
             />
           )}
           horizontal

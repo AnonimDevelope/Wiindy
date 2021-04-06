@@ -1,3 +1,5 @@
 export const SET_LOCATIONS = "SET_LOCATIONS";
+export const DELETE_LOCATION = "DELETE_LOCATION";
 export const GET_FORECAST = "GET_FORECAST";
 export const SET_FORECAST = "SET_FORECAST";
+export const CHECK_FORECAST = "CHECK_FORECAST";

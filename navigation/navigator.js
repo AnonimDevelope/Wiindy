@@ -1,5 +1,4 @@
 import React from "react";
-import { View } from "react-native";
 import {
   createStackNavigator,
   TransitionPresets,
@@ -27,6 +26,7 @@ const defaultStackOptions = {
 const LocationsTabs = createMaterialTopTabNavigator();
 const LocationTabsScreen = () => (
   <LocationsTabs.Navigator
+    backBehavior="initialRoute"
     initialRouteName="My Cities"
     tabBarPosition="bottom"
     tabBarOptions={{
@@ -39,7 +39,7 @@ const LocationTabsScreen = () => (
       name="Near Me"
       component={GpsLocationScreen}
       options={{
-        tabBarLabel: "Near Me",
+        //tabBarLabel: "Near Me",
         tabBarIcon: ({ focused }) =>
           focused ? (
             <Icon
@@ -60,7 +60,7 @@ const LocationTabsScreen = () => (
       name="My Cities"
       component={LocationsScreen}
       options={{
-        tabBarLabel: "Near Me",
+        //tabBarLabel: "Near Me",
         tabBarIcon: ({ focused }) =>
           focused ? (
             <Icon name="star" size={25} color={colors.mainTextColor} />
@@ -73,7 +73,7 @@ const LocationTabsScreen = () => (
       name="Search City"
       component={SearchLocationScreen}
       options={{
-        tabBarLabel: "Near Me",
+        //tabBarLabel: "Near Me",
         tabBarIcon: ({ focused }) =>
           focused ? (
             <Icon name="magnify-plus" size={25} color={colors.mainTextColor} />
@@ -109,7 +109,10 @@ const ForecastStackScreen = () => (
     <ForecastStack.Screen
       name="Forecast"
       component={ForecastScreen}
-      options={{ title: "Weather" }}
+      options={{
+        title: "Weather",
+        headerShown: false,
+      }}
     />
   </ForecastStack.Navigator>
 );

@@ -2,25 +2,32 @@ import React from "react";
 import { View, StyleSheet, Text } from "react-native";
 import LottieView from "lottie-react-native";
 import colors from "../../constants/colors";
+import getIcon from "../../assets/lottie/getIcon";
 
-const ForecastMain = ({ temperature, city, countryCode, status }) => (
-  <View style={styles.main}>
-    <LottieView
-      source={require("../../assets/lottie/foggy.json")}
-      loop
-      autoPlay
-      style={styles.icon}
-    />
-    <View style={styles.temperatureContainer}>
-      <Text style={styles.temperature}>{temperature.toFixed(0)}</Text>
-      <Text style={styles.celsius}>°c</Text>
+const ForecastMain = ({
+  temperature,
+  city,
+  countryCode,
+  status,
+  iconId,
+  id,
+}) => {
+  const icon = getIcon(iconId, id);
+
+  return (
+    <View style={styles.main}>
+      <LottieView source={icon.icon} loop autoPlay style={styles.icon} />
+      <View style={styles.temperatureContainer}>
+        <Text style={styles.temperature}>{temperature.toFixed(0)}</Text>
+        <Text style={styles.celsius}>°c</Text>
+      </View>
+      <Text style={styles.location}>
+        {city}, {countryCode}
+      </Text>
+      <Text style={styles.status}>{status}</Text>
     </View>
-    <Text style={styles.location}>
-      {city}, {countryCode}
-    </Text>
-    <Text style={styles.status}>{status}</Text>
-  </View>
-);
+  );
+};
 
 const styles = StyleSheet.create({
   location: {
