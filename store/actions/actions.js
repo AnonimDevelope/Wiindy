@@ -91,10 +91,13 @@ export const checkForecast = (forecastArr, instant) => {
     }
     if (hasChanged) {
       dispatch(setForecast(newForecast));
+      dispatch({ type: actionTypes.CHECK_DONE });
       await AsyncStorage.setItem(
         "forecast",
         JSON.stringify({ data: newForecast })
       );
+    } else {
+      dispatch({ type: actionTypes.CHECK_DONE });
     }
   };
 };

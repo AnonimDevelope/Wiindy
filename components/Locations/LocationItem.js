@@ -1,23 +1,11 @@
 import React, { useState } from "react";
-import {
-  View,
-  StyleSheet,
-  Text,
-  TouchableNativeFeedback,
-  TouchableHighlight,
-  Platform,
-  Image,
-} from "react-native";
+import { View, StyleSheet, Text, Image } from "react-native";
 import colors from "../../constants/colors";
 import LottieView from "lottie-react-native";
 import getIcon from "../../assets/lottie/getIcon";
 import IconButton from "../UI/IconButton";
 import * as Haptics from "expo-haptics";
-
-let Touchable = TouchableHighlight;
-if (Platform.OS === "android" && Platform.Version >= 21) {
-  Touchable = TouchableNativeFeedback;
-}
+import Touchable from "../UI/Touchable";
 
 const LocationItem = ({ location, onPress, currentForecast, onDelete }) => {
   const [isDeleteShow, setIsDeleteShow] = useState(false);

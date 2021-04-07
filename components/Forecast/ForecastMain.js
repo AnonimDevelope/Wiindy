@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useRef } from "react";
 import { View, StyleSheet, Text } from "react-native";
 import LottieView from "lottie-react-native";
 import colors from "../../constants/colors";
 import getIcon from "../../assets/lottie/getIcon";
+import { useFocusEffect } from "@react-navigation/native";
 
 const ForecastMain = ({
   temperature,
@@ -14,9 +15,21 @@ const ForecastMain = ({
 }) => {
   const icon = getIcon(iconId, id);
 
+  const lottieRef = useRef(null);
+
+  useFocusEffect(() => {
+    setTimeout(() => lottieRef.current.play(), 100);
+  });
+
   return (
     <View style={styles.main}>
-      <LottieView source={icon.icon} loop autoPlay style={styles.icon} />
+      <LottieView
+        ref={lottieRef}
+        source={icon.icon}
+        loop
+        autoPlay
+        style={styles.icon}
+      />
       <View style={styles.temperatureContainer}>
         <Text style={styles.temperature}>{temperature.toFixed(0)}</Text>
         <Text style={styles.celsius}>°c</Text>

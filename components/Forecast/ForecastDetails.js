@@ -3,22 +3,32 @@ import { View, StyleSheet, Text } from "react-native";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import colors from "../../constants/colors";
 
-const ForecastDetails = ({ humidity, windSpeed, cloudiness }) => (
+const ForecastDetails = ({
+  leftIconName,
+  leftLabel,
+  leftValue,
+  centerLabel,
+  centerIconName,
+  centerValue,
+  rightIconName,
+  rightLabel,
+  rightValue,
+}) => (
   <View style={styles.main}>
     <View style={styles.sideContainer}>
-      <Text style={styles.value}>{windSpeed}</Text>
-      <Icon name="weather-windy" size={35} />
-      <Text style={styles.label}>Wind Speed</Text>
+      <Text style={styles.value}>{leftValue}</Text>
+      <Icon name={leftIconName} size={35} />
+      <Text style={styles.label}>{leftLabel}</Text>
     </View>
     <View style={styles.centerContainer}>
-      <Text style={styles.value}>{cloudiness}</Text>
-      <Icon name="cloud-outline" size={35} />
-      <Text style={styles.label}>Cloudiness</Text>
+      <Text style={styles.value}>{centerValue}</Text>
+      <Icon name={centerIconName} size={35} />
+      <Text style={styles.label}>{centerLabel}</Text>
     </View>
     <View style={styles.sideContainer}>
-      <Text style={styles.value}>{humidity}</Text>
-      <Icon name="water-percent" size={35} />
-      <Text style={styles.label}>Humidity</Text>
+      <Text style={styles.value}>{rightValue}</Text>
+      <Icon name={rightIconName} size={35} />
+      <Text style={styles.label}>{rightLabel}</Text>
     </View>
   </View>
 );

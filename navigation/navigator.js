@@ -11,6 +11,7 @@ import ForecastScreen from "../screens/ForecastScreen";
 import LocationsScreen from "../screens/LocationsScreen";
 import SearchLocationScreen from "../screens/SearchLocationScreen";
 import GpsLocationScreen from "../screens/GpsLocationsScreen";
+import ForecastDetailsScreen from "../screens/ForecastDetailsScreen";
 import colors from "../constants/colors";
 
 const defaultStackOptions = {
@@ -112,6 +113,14 @@ const ForecastStackScreen = () => (
       options={{
         title: "Weather",
         headerShown: false,
+      }}
+    />
+    <ForecastStack.Screen
+      name="Details"
+      component={ForecastDetailsScreen}
+      options={{
+        ...TransitionPresets.ModalSlideFromBottomIOS,
+        detachPreviousScreen: false,
       }}
     />
   </ForecastStack.Navigator>

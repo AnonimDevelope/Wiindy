@@ -1,19 +1,8 @@
 import React from "react";
-import {
-  View,
-  StyleSheet,
-  Text,
-  TouchableNativeFeedback,
-  TouchableHighlight,
-  Platform,
-} from "react-native";
+import { View, StyleSheet, Text } from "react-native";
 import colors from "../../constants/colors";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
-
-let Touchable = TouchableHighlight;
-if (Platform.OS === "android" && Platform.Version >= 21) {
-  Touchable = TouchableNativeFeedback;
-}
+import Touchable from "../UI/Touchable";
 
 const SearchItem = ({ location, onPress }) => (
   <View style={styles.wrapper}>

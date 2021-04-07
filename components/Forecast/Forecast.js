@@ -2,7 +2,7 @@ import React from "react";
 import { View, StyleSheet, FlatList } from "react-native";
 import ForecastItem from "./ForecastItem";
 
-const Forecast = ({ forecast, daily }) => {
+const Forecast = ({ forecast, daily, navigation }) => {
   return (
     <View style={styles.main}>
       {daily ? (
@@ -17,6 +17,12 @@ const Forecast = ({ forecast, daily }) => {
               daily={daily}
               iconId={itemData.item.weather[0].icon}
               id={itemData.item.weather[0].id}
+              onPress={() =>
+                navigation.navigate("Details", {
+                  data: itemData.item,
+                  daily: true,
+                })
+              }
             />
           )}
           horizontal
@@ -33,6 +39,12 @@ const Forecast = ({ forecast, daily }) => {
               daily={daily}
               iconId={itemData.item.weather[0].icon}
               id={itemData.item.weather[0].id}
+              onPress={() =>
+                navigation.navigate("Details", {
+                  data: itemData.item,
+                  daily: false,
+                })
+              }
             />
           )}
           horizontal
@@ -50,6 +62,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     flexDirection: "row",
     marginVertical: 10,
+    overflow: "hidden",
   },
 });
 

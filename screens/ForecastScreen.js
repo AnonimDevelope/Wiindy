@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
   View,
   StyleSheet,
@@ -60,14 +60,20 @@ const ForecastScreen = ({ route, navigation }) => {
         />
         <View style={styles.more}>
           <Text style={styles.heading}>Hourly</Text>
-          <Forecast forecast={forecast.hourly} />
+          <Forecast forecast={forecast.hourly} navigation={navigation} />
           <Text style={styles.heading}>Daily</Text>
-          <Forecast daily forecast={forecast.daily} />
+          <Forecast daily forecast={forecast.daily} navigation={navigation} />
           <Text style={styles.heading}>Details</Text>
           <ForecastDetails
-            humidity={forecast.current.humidity}
-            windSpeed={forecast.current.wind_speed}
-            cloudiness={forecast.current.clouds}
+            leftIconName="weather-windy"
+            leftLabel="Wind Speed"
+            leftValue={forecast.current.wind_speed}
+            centerIconName="cloud-outline"
+            centerLabel="Cloudiness"
+            centerValue={forecast.current.clouds}
+            rightLabel="Humidity"
+            rightIconName="water-percent"
+            rightValue={forecast.current.humidity}
           />
         </View>
       </SafeAreaView>

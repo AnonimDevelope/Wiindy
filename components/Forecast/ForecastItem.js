@@ -3,8 +3,16 @@ import { View, StyleSheet, Text, Image } from "react-native";
 import LottieView from "lottie-react-native";
 import colors from "../../constants/colors";
 import getIcon from "../../assets/lottie/getIcon";
+import Touchable from "../UI/Touchable";
 
-const ForecastItem = ({ temperature, id, timestamp, daily, iconId }) => {
+const ForecastItem = ({
+  temperature,
+  id,
+  timestamp,
+  daily,
+  iconId,
+  onPress,
+}) => {
   const date = new Date(timestamp * 1000);
   const hours = date.getHours();
   let day = date.getDate();
@@ -39,24 +47,26 @@ const ForecastItem = ({ temperature, id, timestamp, daily, iconId }) => {
           <Text style={styles.midnightDate}>{fullDate}</Text>
         </View>
       )}
-      <View style={daily ? styles.itemDaily : styles.item}>
-        <View style={styles.tempWrapper}>
-          <Text style={styles.temp}>{temperature.toFixed(0)}</Text>
-          <Text style={styles.itemText}>°c</Text>
+      <Touchable useForeground onPress={onPress}>
+        <View style={daily ? styles.itemDaily : styles.item}>
+          <View style={styles.tempWrapper}>
+            <Text style={styles.temp}>{temperature.toFixed(0)}</Text>
+            <Text style={styles.itemText}>°c</Text>
+          </View>
+          {icon.animate === true ? (
+            <Image source={icon.icon} style={styles.icon} />
+          ) : (
+            <LottieView source={icon.icon} style={styles.icon} />
+          )}
+          {daily ? (
+            <Text style={styles.itemTextDaily}>
+              {currentWeekDay}, {day}
+            </Text>
+          ) : (
+            <Text style={styles.itemText}>{hours}:00</Text>
+          )}
         </View>
-        {icon.animate === true ? (
-          <Image source={icon.icon} style={styles.icon} />
-        ) : (
-          <LottieView source={icon.icon} style={styles.icon} />
-        )}
-        {daily ? (
-          <Text style={styles.itemTextDaily}>
-            {currentWeekDay}, {day}
-          </Text>
-        ) : (
-          <Text style={styles.itemText}>{hours}:00</Text>
-        )}
-      </View>
+      </Touchable>
     </React.Fragment>
   );
 };
