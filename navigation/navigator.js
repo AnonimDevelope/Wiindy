@@ -4,7 +4,6 @@ import {
   TransitionPresets,
 } from "@react-navigation/stack";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
-import IconButton from "../components/UI/IconButton";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 
 import ForecastScreen from "../screens/ForecastScreen";
@@ -12,7 +11,9 @@ import LocationsScreen from "../screens/LocationsScreen";
 import SearchLocationScreen from "../screens/SearchLocationScreen";
 import GpsLocationScreen from "../screens/GpsLocationsScreen";
 import ForecastDetailsScreen from "../screens/ForecastDetailsScreen";
+import SettingsScreen from "../screens/SettingsScreen";
 import colors from "../constants/colors";
+import Menu from "../components/Navigation/Menu";
 
 const defaultStackOptions = {
   ...TransitionPresets.SlideFromRightIOS,
@@ -96,23 +97,26 @@ const ForecastStackScreen = () => (
     <ForecastStack.Screen
       name="Weatherio"
       component={LocationTabsScreen}
-      options={{
+      options={({ navigation }) => ({
         headerRight: () => (
-          <IconButton
-            name="dots-vertical"
-            size={25}
-            color={colors.mainTextColor}
-            style={{ marginRight: 15 }}
-          />
+          <Menu onPressSettings={() => navigation.navigate("Settings")} />
         ),
-      }}
+      })}
     />
     <ForecastStack.Screen
       name="Forecast"
       component={ForecastScreen}
       options={{
-        title: "Weather",
         headerShown: false,
+        gestureEnabled: true,
+        gestureDirection: "horizontal",
+      }}
+    />
+    <ForecastStack.Screen
+      name="Settings"
+      component={SettingsScreen}
+      options={{
+        ...TransitionPresets.DefaultTransition,
       }}
     />
     <ForecastStack.Screen
@@ -121,6 +125,8 @@ const ForecastStackScreen = () => (
       options={{
         ...TransitionPresets.ModalSlideFromBottomIOS,
         detachPreviousScreen: false,
+        gestureEnabled: true,
+        gestureDirection: "vertical",
       }}
     />
   </ForecastStack.Navigator>

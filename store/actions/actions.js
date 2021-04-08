@@ -11,6 +11,8 @@ export const setForecast = (forecast) => ({
   forecast,
 });
 
+export const checkDone = () => ({ type: actionTypes.CHECK_DONE });
+
 export const getForecast = (location) => {
   return async (dispatch) => {
     const value = await AsyncStorage.getItem("forecast");
@@ -91,13 +93,13 @@ export const checkForecast = (forecastArr, instant) => {
     }
     if (hasChanged) {
       dispatch(setForecast(newForecast));
-      dispatch({ type: actionTypes.CHECK_DONE });
+      dispatch(checkDone());
       await AsyncStorage.setItem(
         "forecast",
         JSON.stringify({ data: newForecast })
       );
     } else {
-      dispatch({ type: actionTypes.CHECK_DONE });
+      dispatch(checkDone());
     }
   };
 };

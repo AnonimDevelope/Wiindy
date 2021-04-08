@@ -1,4 +1,4 @@
-import React from "react";
+import React, { memo } from "react";
 import { View, StyleSheet, Text } from "react-native";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import colors from "../../constants/colors";
@@ -70,4 +70,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ForecastDetails;
+export default memo(ForecastDetails);

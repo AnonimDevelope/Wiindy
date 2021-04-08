@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useRef, memo } from "react";
 import { View, StyleSheet, Text } from "react-native";
 import LottieView from "lottie-react-native";
 import colors from "../../constants/colors";
@@ -18,7 +18,11 @@ const ForecastMain = ({
   const lottieRef = useRef(null);
 
   useFocusEffect(() => {
-    setTimeout(() => lottieRef.current.play(), 100);
+    setTimeout(() => {
+      if (lottieRef.current) {
+        lottieRef.current.play();
+      }
+    }, 100);
   });
 
   return (
@@ -29,6 +33,7 @@ const ForecastMain = ({
         loop
         autoPlay
         style={styles.icon}
+        hardwareAccelerationAndroid
       />
       <View style={styles.temperatureContainer}>
         <Text style={styles.temperature}>{temperature.toFixed(0)}</Text>
@@ -76,4 +81,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ForecastMain;
+export default memo(ForecastMain);

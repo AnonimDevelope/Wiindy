@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import {
   View,
   StyleSheet,
@@ -66,22 +66,25 @@ const SearchLocationScreen = ({ navigation }) => {
     }
   };
 
-  let list = (
-    <FlatList
-      contentContainerStyle={styles.list}
-      keyExtractor={(item) => `${item.id}`}
-      data={cities}
-      renderItem={(itemData) => (
-        <SearchItem
-          location={`${itemData.item.city}, ${itemData.item.country}`}
-          onPress={() => {
-            addLocation(itemData.item);
-            dispatch(getForecast(itemData.item));
-            navigation.goBack();
-          }}
-        />
-      )}
-    />
+  let list = useMemo(
+    () => (
+      <FlatList
+        contentContainerStyle={styles.list}
+        keyExtractor={(item) => `${item.id}`}
+        data={cities}
+        renderItem={(itemData) => (
+          <SearchItem
+            location={`${itemData.item.city}, ${itemData.item.country}`}
+            onPress={() => {
+              addLocation(itemData.item);
+              dispatch(getForecast(itemData.item));
+              navigation.goBack();
+            }}
+          />
+        )}
+      />
+    ),
+    [cities]
   );
 
   if (cities === undefined || cities.length === 0) {

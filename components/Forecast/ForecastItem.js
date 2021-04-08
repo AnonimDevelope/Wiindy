@@ -56,7 +56,11 @@ const ForecastItem = ({
           {icon.animate === true ? (
             <Image source={icon.icon} style={styles.icon} />
           ) : (
-            <LottieView source={icon.icon} style={styles.icon} />
+            <LottieView
+              source={icon.icon}
+              style={styles.icon}
+              hardwareAccelerationAndroid
+            />
           )}
           {daily ? (
             <Text style={styles.itemTextDaily}>

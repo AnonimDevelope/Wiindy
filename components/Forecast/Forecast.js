@@ -1,5 +1,5 @@
-import React from "react";
-import { View, StyleSheet, FlatList } from "react-native";
+import React, { memo } from "react";
+import { View, StyleSheet, FlatList, Dimensions } from "react-native";
 import ForecastItem from "./ForecastItem";
 
 const Forecast = ({ forecast, daily, navigation }) => {
@@ -8,6 +8,10 @@ const Forecast = ({ forecast, daily, navigation }) => {
       {daily ? (
         <FlatList
           data={forecast}
+          initialNumToRender={(
+            Dimensions.get("screen").width / 110 +
+            1
+          ).toFixed(0)}
           keyExtractor={(item) => `${item.dt}`}
           renderItem={(itemData) => (
             <ForecastItem
@@ -31,6 +35,12 @@ const Forecast = ({ forecast, daily, navigation }) => {
         <FlatList
           data={forecast}
           keyExtractor={(item) => `${item.dt}`}
+          initialNumToRender={(
+            Dimensions.get("screen").width / 110 +
+            1
+          ).toFixed(0)}
+          updateCellsBatchingPeriod={100}
+          windowSize={11}
           renderItem={(itemData) => (
             <ForecastItem
               timestamp={itemData.item.dt}
@@ -66,4 +76,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Forecast;
+export default memo(Forecast);

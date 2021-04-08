@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { View, StyleSheet, Button, FlatList } from "react-native";
 import colors from "../constants/colors";
 import * as Location from "expo-location";
