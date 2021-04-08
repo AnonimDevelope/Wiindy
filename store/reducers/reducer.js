@@ -4,6 +4,7 @@ const initialState = {
   forecast: [],
   locations: [],
   forecastChecked: false,
+  settings: {},
 };
 
 export default (state = initialState, action) => {
