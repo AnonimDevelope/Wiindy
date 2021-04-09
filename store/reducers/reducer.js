@@ -3,8 +3,8 @@ import * as actionTypes from "../actions/actionTypes";
 const initialState = {
   forecast: [],
   locations: [],
-  forecastChecked: false,
   settings: {},
+  forecastChecked: false,
 };
 
 export default (state = initialState, action) => {
@@ -15,6 +15,8 @@ export default (state = initialState, action) => {
       return { ...state, forecast: action.forecast };
     case actionTypes.CHECK_DONE:
       return { ...state, forecastChecked: true };
+    case actionTypes.SET_SETTINGS:
+      return { ...state, settings: action.settings };
     default:
       return state;
   }

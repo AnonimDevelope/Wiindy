@@ -12,6 +12,7 @@ const ForecastMain = ({
   status,
   iconId,
   id,
+  isDark,
 }) => {
   const icon = getIcon(iconId, id);
 
@@ -36,13 +37,41 @@ const ForecastMain = ({
         hardwareAccelerationAndroid
       />
       <View style={styles.temperatureContainer}>
-        <Text style={styles.temperature}>{temperature.toFixed(0)}</Text>
-        <Text style={styles.celsius}>°c</Text>
+        <Text
+          style={
+            isDark
+              ? { ...styles.temperature, color: colors.whiteGray }
+              : styles.temperature
+          }
+        >
+          {temperature.toFixed(0)}
+        </Text>
+        <Text
+          style={
+            isDark
+              ? { ...styles.celsius, color: colors.whiteGray }
+              : styles.celsius
+          }
+        >
+          °c
+        </Text>
       </View>
-      <Text style={styles.location}>
+      <Text
+        style={
+          isDark
+            ? { ...styles.location, color: colors.whiteGray }
+            : styles.location
+        }
+      >
         {city}, {countryCode}
       </Text>
-      <Text style={styles.status}>{status}</Text>
+      <Text
+        style={
+          isDark ? { ...styles.status, color: colors.whiteGray } : styles.status
+        }
+      >
+        {status}
+      </Text>
     </View>
   );
 };

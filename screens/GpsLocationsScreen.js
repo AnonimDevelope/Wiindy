@@ -4,7 +4,7 @@ import colors from "../constants/colors";
 import * as Location from "expo-location";
 import * as Permissions from "expo-permissions";
 import { usePermissions } from "expo-permissions";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setLocations, getForecast } from "../store/actions/actions";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
@@ -15,6 +15,8 @@ const GpsLocationsScreen = ({ navigation }) => {
   const [permission, askForPermission] = usePermissions(Permissions.LOCATION);
   const [isLoading, setIsLoading] = useState(false);
   const [cities, setCities] = useState(null);
+
+  const isDark = useSelector((state) => state.settings.darkMode);
 
   const dispatch = useDispatch();
 
@@ -80,16 +82,23 @@ const GpsLocationsScreen = ({ navigation }) => {
     setCities(data.data);
   };
 
+  let screenStyle = styles.screen;
+  let screenEmptyStyle = styles.screenEmpty;
+  if (isDark) {
+    screenEmptyStyle = styles.screenEmptyDark;
+    screenStyle = styles.screenDark;
+  }
+
   if (isLoading && cities === null) {
     return (
-      <View style={styles.screenEmpty}>
+      <View style={screenEmptyStyle}>
         <Activity />
       </View>
     );
   }
 
   return (
-    <View style={cities ? styles.screen : styles.screenEmpty}>
+    <View style={cities ? screenStyle : screenEmptyStyle}>
       {cities ? (
         <FlatList
           onRefresh={getCities}
@@ -100,6 +109,7 @@ const GpsLocationsScreen = ({ navigation }) => {
           renderItem={(itemData) => (
             <SearchItem
               location={`${itemData.item.city}, ${itemData.item.country}`}
+              isDark={isDark}
               onPress={() => {
                 addLocation(itemData.item);
                 dispatch(getForecast(itemData.item));
@@ -120,11 +130,21 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: colors.backgroundColor,
   },
+  screenDark: {
+    flex: 1,
+    backgroundColor: colors.backgroundColorDark,
+  },
   screenEmpty: {
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
     backgroundColor: colors.backgroundColor,
+  },
+  screenEmptyDark: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: colors.backgroundColorDark,
   },
   list: {
     alignItems: "center",

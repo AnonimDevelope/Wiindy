@@ -1,5 +1,6 @@
 import React from "react";
 import { View, StyleSheet, Text } from "react-native";
+import { useSelector } from "react-redux";
 import colors from "../constants/colors";
 import ForecastDetails from "../components/Forecast/ForecastDetails";
 import { ScrollView } from "react-native-gesture-handler";
@@ -7,6 +8,7 @@ import { ScrollView } from "react-native-gesture-handler";
 const ForecastDetailsScreen = ({ route }) => {
   const forecast = route.params.data;
   const isDaily = route.params.daily;
+  const isDark = useSelector((state) => state.settings.darkMode);
 
   if (isDaily) {
     const sunsetDate = new Date(forecast.sunset * 1000);
@@ -27,8 +29,14 @@ const ForecastDetailsScreen = ({ route }) => {
     const transformedDate = `${day}.${month}.${date.getFullYear()}`;
 
     return (
-      <ScrollView style={styles.screen}>
-        <Text style={styles.title}>{transformedDate}</Text>
+      <ScrollView style={isDark ? styles.screenDark : styles.screen}>
+        <Text
+          style={
+            isDark ? { ...styles.title, color: colors.whiteGray } : styles.title
+          }
+        >
+          {transformedDate}
+        </Text>
         <ForecastDetails
           leftIconName="white-balance-sunny"
           leftLabel="Temperature (Day)"
@@ -39,6 +47,7 @@ const ForecastDetailsScreen = ({ route }) => {
           rightLabel="Feels like (Day)"
           rightIconName="thermometer"
           rightValue={forecast.feels_like.day}
+          isDark={isDark}
         />
         <ForecastDetails
           leftIconName="weather-windy"
@@ -50,6 +59,7 @@ const ForecastDetailsScreen = ({ route }) => {
           rightLabel="Humidity"
           rightIconName="water-percent"
           rightValue={forecast.humidity}
+          isDark={isDark}
         />
         <ForecastDetails
           leftIconName="weather-sunset-up"
@@ -61,14 +71,43 @@ const ForecastDetailsScreen = ({ route }) => {
           rightLabel="Sunset"
           rightIconName="weather-sunset-down"
           rightValue={sunset}
+          isDark={isDark}
         />
         <View style={styles.textContainer}>
-          <Text style={styles.labelText}>Status: </Text>
-          <Text style={styles.text}>{forecast.weather[0].main}</Text>
+          <Text
+            style={
+              isDark
+                ? { ...styles.labelText, color: colors.whiteGray }
+                : styles.labelText
+            }
+          >
+            Status:
+          </Text>
+          <Text
+            style={
+              isDark ? { ...styles.text, color: colors.whiteGray } : styles.text
+            }
+          >
+            {forecast.weather[0].main}
+          </Text>
         </View>
         <View style={styles.textContainer}>
-          <Text style={styles.labelText}>Description: </Text>
-          <Text style={styles.text}>{forecast.weather[0].description}</Text>
+          <Text
+            style={
+              isDark
+                ? { ...styles.labelText, color: colors.whiteGray }
+                : styles.labelText
+            }
+          >
+            Description:
+          </Text>
+          <Text
+            style={
+              isDark ? { ...styles.text, color: colors.whiteGray } : styles.text
+            }
+          >
+            {forecast.weather[0].description}
+          </Text>
         </View>
       </ScrollView>
     );
@@ -90,8 +129,14 @@ const ForecastDetailsScreen = ({ route }) => {
   const transformedDate = `${day}.${month}.${date.getFullYear()} ${date.getHours()}:${minutes}`;
 
   return (
-    <View style={styles.screen}>
-      <Text style={styles.title}>{transformedDate}</Text>
+    <View style={isDark ? styles.screenDark : styles.screen}>
+      <Text
+        style={
+          isDark ? { ...styles.title, color: colors.whiteGray } : styles.title
+        }
+      >
+        {transformedDate}
+      </Text>
       <ForecastDetails
         leftIconName="white-balance-sunny"
         leftLabel="Temperature"
@@ -102,6 +147,7 @@ const ForecastDetailsScreen = ({ route }) => {
         rightLabel="Feels like"
         rightIconName="thermometer"
         rightValue={forecast.feels_like}
+        isDark={isDark}
       />
       <ForecastDetails
         leftIconName="weather-windy"
@@ -113,14 +159,43 @@ const ForecastDetailsScreen = ({ route }) => {
         rightLabel="Humidity"
         rightIconName="water-percent"
         rightValue={forecast.humidity}
+        isDark={isDark}
       />
       <View style={styles.textContainer}>
-        <Text style={styles.labelText}>Status: </Text>
-        <Text style={styles.text}>{forecast.weather[0].main}</Text>
+        <Text
+          style={
+            isDark
+              ? { ...styles.labelText, color: colors.whiteGray }
+              : styles.labelText
+          }
+        >
+          Status:{" "}
+        </Text>
+        <Text
+          style={
+            isDark ? { ...styles.text, color: colors.whiteGray } : styles.text
+          }
+        >
+          {forecast.weather[0].main}
+        </Text>
       </View>
       <View style={styles.textContainer}>
-        <Text style={styles.labelText}>Description: </Text>
-        <Text style={styles.text}>{forecast.weather[0].description}</Text>
+        <Text
+          style={
+            isDark
+              ? { ...styles.labelText, color: colors.whiteGray }
+              : styles.labelText
+          }
+        >
+          Description:{" "}
+        </Text>
+        <Text
+          style={
+            isDark ? { ...styles.text, color: colors.whiteGray } : styles.text
+          }
+        >
+          {forecast.weather[0].description}
+        </Text>
       </View>
     </View>
   );
@@ -130,6 +205,11 @@ const styles = StyleSheet.create({
   screen: {
     flex: 1,
     backgroundColor: colors.backgroundColor,
+    paddingHorizontal: 15,
+  },
+  screenDark: {
+    flex: 1,
+    backgroundColor: colors.backgroundColorDark,
     paddingHorizontal: 15,
   },
   textContainer: {

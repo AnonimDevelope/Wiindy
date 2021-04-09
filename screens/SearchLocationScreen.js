@@ -8,7 +8,7 @@ import {
   Keyboard,
   TouchableWithoutFeedback,
 } from "react-native";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { getForecast, setLocations } from "../store/actions/actions";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import colors from "../constants/colors";
@@ -21,6 +21,8 @@ const SearchLocationScreen = ({ navigation }) => {
   const [searchValue, setSearchValue] = useState("");
   const [cities, setSities] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+
+  const isDark = useSelector((state) => state.settings.darkMode);
 
   const dispatch = useDispatch();
 
@@ -75,6 +77,7 @@ const SearchLocationScreen = ({ navigation }) => {
         renderItem={(itemData) => (
           <SearchItem
             location={`${itemData.item.city}, ${itemData.item.country}`}
+            isDark={isDark}
             onPress={() => {
               addLocation(itemData.item);
               dispatch(getForecast(itemData.item));
@@ -84,11 +87,19 @@ const SearchLocationScreen = ({ navigation }) => {
         )}
       />
     ),
-    [cities]
+    [cities, isDark]
   );
 
   if (cities === undefined || cities.length === 0) {
-    list = <Text style={styles.emptyText}>Search your City</Text>;
+    list = (
+      <Text
+        style={
+          isDark ? { ...styles.emptyText, color: "white" } : styles.emptyText
+        }
+      >
+        Search your City
+      </Text>
+    );
   }
 
   if (isLoading) {
@@ -97,14 +108,31 @@ const SearchLocationScreen = ({ navigation }) => {
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-      <View style={styles.screen}>
-        <View style={styles.searchWrapper}>
-          <View style={styles.search}>
+      <View style={isDark ? styles.screenDark : styles.screen}>
+        <View
+          style={
+            isDark
+              ? { ...styles.searchWrapper, backgroundColor: colors.cardColor }
+              : styles.searchWrapper
+          }
+        >
+          <View
+            style={
+              isDark
+                ? { ...styles.search, backgroundColor: "#474c54" }
+                : styles.search
+            }
+          >
             <TextInput
               underlineColorAndroid="transparent"
               placeholder="Search"
-              style={styles.headerSearch}
+              style={
+                isDark
+                  ? { ...styles.headerSearch, color: "white" }
+                  : styles.headerSearch
+              }
               autoCorrect={false}
+              placeholderTextColor={isDark ? "#d9d9d9" : "gray"}
               value={searchValue}
               onChangeText={(text) => setSearchValue(text)}
               onSubmitEditing={findCity}
@@ -112,7 +140,7 @@ const SearchLocationScreen = ({ navigation }) => {
             <IconButton
               name="magnify"
               size={20}
-              color={colors.mainTextColor}
+              color={isDark ? "white" : colors.mainTextColor}
               innerStyle={styles.searchIconInner}
               onPress={findCity}
             />
@@ -128,6 +156,11 @@ const styles = StyleSheet.create({
   screen: {
     flex: 1,
     backgroundColor: colors.backgroundColor,
+    paddingTop: 70,
+  },
+  screenDark: {
+    flex: 1,
+    backgroundColor: colors.backgroundColorDark,
     paddingTop: 70,
   },
   headerSearch: {

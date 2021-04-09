@@ -4,14 +4,26 @@ import colors from "../../constants/colors";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import Touchable from "../UI/Touchable";
 
-const SearchItem = ({ location, onPress }) => (
+const SearchItem = ({ location, onPress, isDark }) => (
   <View style={styles.wrapper}>
     <Touchable onPress={onPress}>
-      <View style={styles.item}>
-        <Text style={styles.text}>{location}</Text>
+      <View
+        style={
+          isDark
+            ? { ...styles.item, backgroundColor: colors.cardColor }
+            : styles.item
+        }
+      >
+        <Text
+          style={
+            isDark ? { ...styles.text, color: colors.whiteGray } : styles.text
+          }
+        >
+          {location}
+        </Text>
         <Icon
           name="map-marker-outline"
-          color={colors.mainTextColor}
+          color={isDark ? colors.whiteGray : colors.mainTextColor}
           size={25}
         />
       </View>

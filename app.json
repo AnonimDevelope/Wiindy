@@ -21,6 +21,7 @@
     },
     "ios": {
       "supportsTablet": true,
+      "userInterfaceStyle": "automatic",
       "infoPlist": {
         "UIBackgroundModes": [
           "location",

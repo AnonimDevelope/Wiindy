@@ -4,6 +4,7 @@ import {
   TransitionPresets,
 } from "@react-navigation/stack";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
+import { createNativeStackNavigator } from "react-native-screens/native-stack";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 
 import ForecastScreen from "../screens/ForecastScreen";
@@ -23,10 +24,11 @@ const defaultStackOptions = {
     fontFamily: "lexend-semi-bold",
     color: "#8C8C8C",
   },
+  // cardStyle: { backgroundColor: "#000000", opacity: 1 },
 };
 
 const LocationsTabs = createMaterialTopTabNavigator();
-const LocationTabsScreen = () => (
+const LocationTabsScreen = ({ isDark }) => (
   <LocationsTabs.Navigator
     backBehavior="initialRoute"
     initialRouteName="My Cities"
@@ -47,13 +49,13 @@ const LocationTabsScreen = () => (
             <Icon
               name="map-marker-plus"
               size={25}
-              color={colors.mainTextColor}
+              color={isDark ? colors.whiteGray : colors.mainTextColor}
             />
           ) : (
             <Icon
               name="map-marker-plus-outline"
               size={25}
-              color={colors.mainTextColor}
+              color={isDark ? colors.whiteGray : colors.mainTextColor}
             />
           ),
       }}
@@ -65,9 +67,17 @@ const LocationTabsScreen = () => (
         //tabBarLabel: "Near Me",
         tabBarIcon: ({ focused }) =>
           focused ? (
-            <Icon name="star" size={25} color={colors.mainTextColor} />
+            <Icon
+              name="star"
+              size={25}
+              color={isDark ? colors.whiteGray : colors.mainTextColor}
+            />
           ) : (
-            <Icon name="star-outline" size={25} color={colors.mainTextColor} />
+            <Icon
+              name="star-outline"
+              size={25}
+              color={isDark ? colors.whiteGray : colors.mainTextColor}
+            />
           ),
       }}
     />
@@ -78,12 +88,16 @@ const LocationTabsScreen = () => (
         //tabBarLabel: "Near Me",
         tabBarIcon: ({ focused }) =>
           focused ? (
-            <Icon name="magnify-plus" size={25} color={colors.mainTextColor} />
+            <Icon
+              name="magnify-plus"
+              size={25}
+              color={isDark ? colors.whiteGray : colors.mainTextColor}
+            />
           ) : (
             <Icon
               name="magnify-plus-outline"
               size={25}
-              color={colors.mainTextColor}
+              color={isDark ? colors.whiteGray : colors.mainTextColor}
             />
           ),
       }}
@@ -91,18 +105,51 @@ const LocationTabsScreen = () => (
   </LocationsTabs.Navigator>
 );
 
-const ForecastStack = createStackNavigator();
-const ForecastStackScreen = () => (
-  <ForecastStack.Navigator screenOptions={defaultStackOptions}>
-    <ForecastStack.Screen
+const NativeForecastStack = createNativeStackNavigator();
+export const NativeForecastScreen = ({ isDark }) => (
+  <NativeForecastStack.Navigator
+    screenOptions={{
+      gestureEnabled: true,
+      headerTintColor: isDark ? colors.whiteGray : colors.mainTextColor,
+      // stackAnimation: isDark ? "fade" : "default",
+    }}
+  >
+    <NativeForecastStack.Screen
       name="Weatherio"
-      component={LocationTabsScreen}
       options={({ navigation }) => ({
         headerRight: () => (
           <Menu onPressSettings={() => navigation.navigate("Settings")} />
         ),
       })}
+    >
+      {(props) => <LocationTabsScreen {...props} isDark={isDark} />}
+    </NativeForecastStack.Screen>
+    <NativeForecastStack.Screen
+      name="Forecast"
+      component={ForecastScreen}
+      //options={{ headerShown: false }}
     />
+    <NativeForecastStack.Screen name="Settings" component={SettingsScreen} />
+    <NativeForecastStack.Screen
+      name="Details"
+      component={ForecastDetailsScreen}
+    />
+  </NativeForecastStack.Navigator>
+);
+
+const ForecastStack = createStackNavigator();
+const ForecastStackScreen = ({ isDark }) => (
+  <ForecastStack.Navigator screenOptions={defaultStackOptions}>
+    <ForecastStack.Screen
+      name="Weatherio"
+      options={({ navigation }) => ({
+        headerRight: () => (
+          <Menu onPressSettings={() => navigation.navigate("Settings")} />
+        ),
+      })}
+    >
+      {(props) => <LocationTabsScreen {...props} isDark={isDark} />}
+    </ForecastStack.Screen>
     <ForecastStack.Screen
       name="Forecast"
       component={ForecastScreen}

@@ -4,3 +4,4 @@ export const GET_FORECAST = "GET_FORECAST";
 export const SET_FORECAST = "SET_FORECAST";
 export const CHECK_FORECAST = "CHECK_FORECAST";
 export const CHECK_DONE = "CHECK_DONE";
+export const SET_SETTINGS = "SET_SETTINGS";

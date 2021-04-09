@@ -1,5 +1,6 @@
 import "react-native-gesture-handler";
 import React, { useEffect, useState } from "react";
+import { useColorScheme, View } from "react-native";
 import { createStore, applyMiddleware, compose } from "redux";
 import { Provider, useDispatch, useSelector } from "react-redux";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -7,22 +8,31 @@ import thunk from "redux-thunk";
 import reducer from "./store/reducers/reducer";
 import { enableScreens } from "react-native-screens";
 enableScreens();
-import { NavigationContainer } from "@react-navigation/native";
+import {
+  NavigationContainer,
+  DarkTheme,
+  DefaultTheme,
+} from "@react-navigation/native";
 import { useFonts } from "expo-font";
 import AppLoading from "expo-app-loading";
-import Navigator from "./navigation/navigator";
+import Navigator, {
+  NativeForecastScreen as NativeNavigator,
+} from "./navigation/navigator";
 import AnimatedSplash from "./components/UI/Splash/AnimatedSplash";
 import {
   setLocations,
   setForecast,
   checkForecast,
   checkDone,
+  setSettings,
 } from "./store/actions/actions";
 import * as BackgroundFetch from "expo-background-fetch";
 import * as TaskManager from "expo-task-manager";
 import * as Notifications from "expo-notifications";
 import * as Permissions from "expo-permissions";
 import { Provider as PaperProvider } from "react-native-paper";
+import colors from "./constants/colors";
+import { setStatusBarStyle } from "expo-status-bar";
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const store = createStore(reducer, composeEnhancers(applyMiddleware(thunk)));
@@ -99,6 +109,7 @@ TaskManager.defineTask(TASK_NAME, async () => {
 export default function App() {
   const [isInitialFetchgDone, setIsInitialFetchDone] = useState(false);
   const [renderDefaultSplash, setRenderDefaultSplash] = useState(true);
+  const [settings, setSettings] = useState({});
 
   let [fontsLoaded] = useFonts({
     "lexend-light": require("./assets/fonts/Lexend-Light.ttf"),
@@ -131,6 +142,17 @@ export default function App() {
     }, 50);
   }, []);
 
+  const scheme = useColorScheme();
+
+  let usingScheme;
+  if (settings.darkMode || scheme === "dark") {
+    usingScheme = DarkTheme;
+    setStatusBarStyle("light");
+  } else {
+    usingScheme = DefaultTheme;
+    setStatusBarStyle("dark");
+  }
+
   if (renderDefaultSplash) {
     return <AppLoading />;
   }
@@ -145,11 +167,32 @@ export default function App() {
       logoWidth={150}
     >
       <Provider store={store}>
-        <ReduxAccess onCheckDone={() => setIsInitialFetchDone(true)}>
+        <ReduxAccess
+          onCheckDone={() => setIsInitialFetchDone(true)}
+          onSetSettings={(settings) => setSettings(settings)}
+        >
           {fontsLoaded && isInitialFetchgDone && (
             <PaperProvider>
-              <NavigationContainer>
-                <Navigator />
+              <NavigationContainer theme={usingScheme}>
+                {settings.simpleAnimations ? (
+                  <View
+                    style={{
+                      flex: 1,
+                      backgroundColor: settings.darkMode ? "#181b21" : "white",
+                    }}
+                  >
+                    <NativeNavigator isDark={settings.darkMode} />
+                  </View>
+                ) : (
+                  <View
+                    style={{
+                      flex: 1,
+                      backgroundColor: settings.darkMode ? "#181b21" : "white",
+                    }}
+                  >
+                    <Navigator isDark={settings.darkMode} />
+                  </View>
+                )}
               </NavigationContainer>
             </PaperProvider>
           )}
@@ -159,11 +202,16 @@ export default function App() {
   );
 }
 
-const ReduxAccess = ({ children, onCheckDone }) => {
+const ReduxAccess = ({ children, onCheckDone, onSetSettings }) => {
   //  Used for accessing redux store in root component
   const isCheckForecastDone = useSelector((state) => state.forecastChecked);
+  const settings = useSelector((state) => state.settings);
 
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    onSetSettings(settings);
+  }, [settings]);
 
   useEffect(() => {
     if (isCheckForecastDone) {
@@ -188,6 +236,25 @@ const ReduxAccess = ({ children, onCheckDone }) => {
         dispatch(checkDone());
       }
     };
+    const getSettings = async () => {
+      const settingsStr = await AsyncStorage.getItem("settings");
+      if (settingsStr !== null) {
+        const settingsObj = JSON.parse(settingsStr);
+        onSetSettings(settingsObj);
+        dispatch(setSettings(settingsObj));
+      } else {
+        const newSettings = {
+          darkMode: false,
+          simpleAnimations: false,
+          units: "metric",
+          lang: "eng",
+        };
+        onSetSettings(newSettings);
+        dispatch(setSettings(newSettings));
+        AsyncStorage.setItem("settings", JSON.stringify(newSettings));
+      }
+    };
+    getSettings();
     getLocations();
     getForecasts();
   }, []);

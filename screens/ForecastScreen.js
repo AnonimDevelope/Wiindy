@@ -29,7 +29,10 @@ const ForecastScreen = ({ route, navigation }) => {
   const dispatch = useDispatch();
 
   const forecasts = useSelector((state) => state.forecast);
+  const settings = useSelector((state) => state.settings);
   const forecast = forecasts.find((item) => item.city === location.city);
+
+  const isDark = settings.darkMode;
 
   const deleteNotifLocation = async () => {
     const notifLocations = await AsyncStorage.getItem("notifLocations");
@@ -94,9 +97,38 @@ const ForecastScreen = ({ route, navigation }) => {
     }
   }, [forecasts]);
 
+  let Area = SafeAreaView;
+
+  if (settings.simpleAnimations) {
+    Area = View;
+  }
+
+  React.useLayoutEffect(() => {
+    navigation.setOptions({
+      headerRight: () =>
+        isNotifEnabled ? (
+          <IconButton
+            color={isDark ? colors.whiteGray : colors.mainTextColor}
+            name="bell"
+            onPress={deleteNotifLocation}
+          />
+        ) : (
+          <IconButton
+            color={isDark ? colors.whiteGray : colors.mainTextColor}
+            name="bell-outline"
+            onPress={addNotifLocation}
+          />
+        ),
+    });
+  }, [navigation, isNotifEnabled]);
+
   return (
     <ScrollView
-      style={styles.screen}
+      style={
+        isDark
+          ? { ...styles.screen, backgroundColor: colors.backgroundColorDark }
+          : styles.screen
+      }
       refreshControl={
         <RefreshControl
           onRefresh={() => {
@@ -107,15 +139,29 @@ const ForecastScreen = ({ route, navigation }) => {
         />
       }
     >
-      <SafeAreaView>
-        <View style={styles.header}>
-          <IconButton name="keyboard-backspace" onPress={navigation.goBack} />
-          {isNotifEnabled ? (
-            <IconButton name="bell" onPress={deleteNotifLocation} />
-          ) : (
-            <IconButton name="bell-outline" onPress={addNotifLocation} />
-          )}
-        </View>
+      <Area>
+        {!settings.simpleAnimations && (
+          <View style={styles.header}>
+            <IconButton
+              name="keyboard-backspace"
+              onPress={navigation.goBack}
+              color={isDark ? colors.whiteGray : colors.mainTextColor}
+            />
+            {isNotifEnabled ? (
+              <IconButton
+                name="bell"
+                onPress={deleteNotifLocation}
+                color={isDark ? colors.whiteGray : colors.mainTextColor}
+              />
+            ) : (
+              <IconButton
+                name="bell-outline"
+                onPress={addNotifLocation}
+                color={isDark ? colors.whiteGray : colors.mainTextColor}
+              />
+            )}
+          </View>
+        )}
         <ForecastMain
           temperature={forecast.current.temp}
           status={forecast.current.weather[0].main}
@@ -123,15 +169,33 @@ const ForecastScreen = ({ route, navigation }) => {
           city={forecast.city}
           iconId={forecast.current.weather[0].icon}
           id={forecast.current.weather[0].id}
+          isDark={isDark}
         />
-        <View style={styles.more}>
-          <Text style={styles.heading}>Daily</Text>
-          <Forecast daily forecast={forecast.daily} navigation={navigation} />
-          <Text style={styles.heading}>Hourly</Text>
+        <View
+          style={settings.simpleAnimations ? styles.moreNative : styles.more}
+        >
+          <Text style={isDark ? styles.headingDark : styles.heading}>
+            Daily
+          </Text>
+          <Forecast
+            daily
+            forecast={forecast.daily}
+            navigation={navigation}
+            isDark={isDark}
+          />
+          <Text style={isDark ? styles.headingDark : styles.heading}>
+            Hourly
+          </Text>
           {isAnimationDone && (
-            <Forecast forecast={forecast.hourly} navigation={navigation} />
+            <Forecast
+              forecast={forecast.hourly}
+              navigation={navigation}
+              isDark={isDark}
+            />
           )}
-          <Text style={styles.heading}>Details</Text>
+          <Text style={isDark ? styles.headingDark : styles.heading}>
+            Details
+          </Text>
           {isAnimationDone && (
             <ForecastDetails
               leftIconName="weather-windy"
@@ -143,10 +207,11 @@ const ForecastScreen = ({ route, navigation }) => {
               rightLabel="Humidity"
               rightIconName="water-percent"
               rightValue={forecast.current.humidity}
+              isDark={isDark}
             />
           )}
         </View>
-      </SafeAreaView>
+      </Area>
     </ScrollView>
   );
 };
@@ -165,8 +230,17 @@ const styles = StyleSheet.create({
     marginTop: margin,
     paddingHorizontal: 15,
   },
+  moreNative: {
+    marginTop: margin - 10,
+    paddingHorizontal: 15,
+  },
   heading: {
     color: colors.mainTextColor,
+    fontFamily: "lexend-semi-bold",
+    fontSize: 20,
+  },
+  headingDark: {
+    color: "#c9c9c9",
     fontFamily: "lexend-semi-bold",
     fontSize: 20,
   },

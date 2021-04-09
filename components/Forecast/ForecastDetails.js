@@ -13,22 +13,52 @@ const ForecastDetails = ({
   rightIconName,
   rightLabel,
   rightValue,
+  isDark,
 }) => (
-  <View style={styles.main}>
+  <View
+    style={
+      isDark
+        ? { ...styles.main, backgroundColor: colors.cardColor }
+        : styles.main
+    }
+  >
     <View style={styles.sideContainer}>
       <Text style={styles.value}>{leftValue}</Text>
-      <Icon name={leftIconName} size={35} />
-      <Text style={styles.label}>{leftLabel}</Text>
+      <Icon
+        name={leftIconName}
+        size={35}
+        color={isDark ? colors.whiteGray : colors.mainTextColor}
+      />
+      <Text style={isDark ? styles.labelDark : styles.label}>{leftLabel}</Text>
     </View>
-    <View style={styles.centerContainer}>
+    <View
+      style={
+        isDark
+          ? {
+              ...styles.centerContainer,
+              borderColor: colors.backgroundColorDark,
+            }
+          : styles.centerContainer
+      }
+    >
       <Text style={styles.value}>{centerValue}</Text>
-      <Icon name={centerIconName} size={35} />
-      <Text style={styles.label}>{centerLabel}</Text>
+      <Icon
+        name={centerIconName}
+        size={35}
+        color={isDark ? colors.whiteGray : colors.mainTextColor}
+      />
+      <Text style={isDark ? styles.labelDark : styles.label}>
+        {centerLabel}
+      </Text>
     </View>
     <View style={styles.sideContainer}>
       <Text style={styles.value}>{rightValue}</Text>
-      <Icon name={rightIconName} size={35} />
-      <Text style={styles.label}>{rightLabel}</Text>
+      <Icon
+        name={rightIconName}
+        size={35}
+        color={isDark ? colors.whiteGray : colors.mainTextColor}
+      />
+      <Text style={isDark ? styles.labelDark : styles.label}>{rightLabel}</Text>
     </View>
   </View>
 );
@@ -65,6 +95,12 @@ const styles = StyleSheet.create({
   label: {
     fontFamily: "lexend-semi-bold",
     color: colors.mainTextColor,
+    maxWidth: 100,
+    textAlign: "center",
+  },
+  labelDark: {
+    fontFamily: "lexend-semi-bold",
+    color: colors.whiteGray,
     maxWidth: 100,
     textAlign: "center",
   },

@@ -8,6 +8,7 @@ import { checkForecast, deleteLocation } from "../store/actions/actions";
 const LocationsScreen = ({ navigation }) => {
   const locations = useSelector((state) => state.locations);
   const forecasts = useSelector((state) => state.forecast);
+  const isDark = useSelector((state) => state.settings.darkMode);
 
   const dispatch = useDispatch();
 
@@ -25,6 +26,7 @@ const LocationsScreen = ({ navigation }) => {
         keyExtractor={(item) => `${item.id}`}
         renderItem={(itemData) => (
           <LocationItem
+            isDark={isDark}
             location={`${itemData.item.city}, ${itemData.item.country}`}
             currentForecast={
               forecasts.find((item) => item.city === itemData.item.city).current
@@ -47,12 +49,20 @@ const LocationsScreen = ({ navigation }) => {
         )}
       />
     );
-  }, [forecasts]);
+  }, [forecasts, isDark]);
 
   return (
-    <View style={styles.screen}>
+    <View style={isDark ? styles.screenDark : styles.screen}>
       {!locations || locations.length === 0 ? (
-        <Text style={styles.emptyText}>Swipe to search your city</Text>
+        <Text
+          style={
+            isDark
+              ? { ...styles.emptyText, color: colors.whiteGray }
+              : styles.emptyText
+          }
+        >
+          Swipe to search your city
+        </Text>
       ) : (
         list
       )}
@@ -64,6 +74,11 @@ const styles = StyleSheet.create({
   screen: {
     flex: 1,
     backgroundColor: colors.backgroundColor,
+    alignItems: "center",
+  },
+  screenDark: {
+    flex: 1,
+    backgroundColor: colors.backgroundColorDark,
     alignItems: "center",
   },
   emptyText: {

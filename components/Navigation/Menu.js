@@ -2,9 +2,12 @@ import React, { useState } from "react";
 import * as Linking from "expo-linking";
 import IconButton from "../UI/IconButton";
 import { Menu } from "react-native-paper";
+import { useSelector } from "react-redux";
+import colors from "../../constants/colors";
 
 const headerMenu = ({ onPressSettings }) => {
   const [isVisible, setIsVisible] = useState(false);
+  const isDark = useSelector((state) => state.settings.darkMode);
 
   const redirectToGithubHandler = () => {
     setIsVisible(false);
@@ -12,8 +15,6 @@ const headerMenu = ({ onPressSettings }) => {
       (supported) => {
         if (supported) {
           Linking.openURL("https://github.com/AnonimDevelope/weatherio");
-        } else {
-          console.log("Don't know how to open URI: ");
         }
       }
     );
@@ -28,6 +29,7 @@ const headerMenu = ({ onPressSettings }) => {
           name="dots-vertical"
           size={25}
           style={{ marginRight: 15 }}
+          color={isDark ? colors.whiteGray : colors.mainTextColor}
           onPress={() => setIsVisible(true)}
         />
       }

@@ -7,7 +7,13 @@ import IconButton from "../UI/IconButton";
 import * as Haptics from "expo-haptics";
 import Touchable from "../UI/Touchable";
 
-const LocationItem = ({ location, onPress, currentForecast, onDelete }) => {
+const LocationItem = ({
+  location,
+  onPress,
+  currentForecast,
+  onDelete,
+  isDark,
+}) => {
   const [isDeleteShow, setIsDeleteShow] = useState(false);
 
   const icon = getIcon(
@@ -37,23 +43,52 @@ const LocationItem = ({ location, onPress, currentForecast, onDelete }) => {
   };
 
   return (
-    <View style={styles.wrapper}>
+    <View
+      style={
+        isDark
+          ? { ...styles.wrapper, backgroundColor: colors.cardColor }
+          : styles.wrapper
+      }
+    >
       <Touchable
         onPress={onPressHandler}
         onLongPress={onLongPressHandler}
         delayLongPress={500}
         useForeground
       >
-        <View style={styles.item}>
-          <Text style={styles.text}>{location}</Text>
+        <View
+          style={
+            isDark
+              ? { ...styles.item, backgroundColor: colors.cardColor }
+              : styles.item
+          }
+        >
+          <Text
+            style={
+              isDark ? { ...styles.text, color: colors.whiteGray } : styles.text
+            }
+          >
+            {location}
+          </Text>
           <View style={styles.iconTempContainer}>
             {isDeleteShow ? (
               <View style={styles.deleteWrapper}>
-                <IconButton onPress={onDelete} name="delete" size={25} />
+                <IconButton
+                  color={isDark ? colors.whiteGray : colors.mainTextColor}
+                  onPress={onDelete}
+                  name="delete"
+                  size={25}
+                />
               </View>
             ) : (
               <React.Fragment>
-                <Text style={styles.temperature}>
+                <Text
+                  style={
+                    isDark
+                      ? { ...styles.temperature, color: colors.whiteGray }
+                      : styles.temperature
+                  }
+                >
                   {currentForecast.temp.toFixed(0)}°c
                 </Text>
                 <Icon />

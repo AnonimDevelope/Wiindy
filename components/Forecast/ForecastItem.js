@@ -12,6 +12,7 @@ const ForecastItem = ({
   daily,
   iconId,
   onPress,
+  isDark,
 }) => {
   const date = new Date(timestamp * 1000);
   const hours = date.getHours();
@@ -44,14 +45,42 @@ const ForecastItem = ({
     <React.Fragment>
       {hours === 0 && !daily && (
         <View style={styles.midnight}>
-          <Text style={styles.midnightDate}>{fullDate}</Text>
+          <Text
+            style={
+              isDark
+                ? {
+                    ...styles.midnightDate,
+                    color: colors.whiteGray,
+                    backgroundColor: colors.cardColor,
+                  }
+                : styles.midnightDate
+            }
+          >
+            {fullDate}
+          </Text>
         </View>
       )}
       <Touchable useForeground onPress={onPress}>
         <View style={daily ? styles.itemDaily : styles.item}>
           <View style={styles.tempWrapper}>
-            <Text style={styles.temp}>{temperature.toFixed(0)}</Text>
-            <Text style={styles.itemText}>°c</Text>
+            <Text
+              style={
+                isDark
+                  ? { ...styles.temp, color: colors.whiteGray }
+                  : styles.temp
+              }
+            >
+              {temperature.toFixed(0)}
+            </Text>
+            <Text
+              style={
+                isDark
+                  ? { ...styles.itemText, color: colors.whiteGray }
+                  : styles.itemText
+              }
+            >
+              °c
+            </Text>
           </View>
           {icon.animate === true ? (
             <Image source={icon.icon} style={styles.icon} />
@@ -63,11 +92,25 @@ const ForecastItem = ({
             />
           )}
           {daily ? (
-            <Text style={styles.itemTextDaily}>
+            <Text
+              style={
+                isDark
+                  ? { ...styles.itemTextDaily, color: colors.whiteGray }
+                  : styles.itemTextDaily
+              }
+            >
               {currentWeekDay}, {day}
             </Text>
           ) : (
-            <Text style={styles.itemText}>{hours}:00</Text>
+            <Text
+              style={
+                isDark
+                  ? { ...styles.itemText, color: colors.whiteGray }
+                  : styles.itemText
+              }
+            >
+              {hours}:00
+            </Text>
           )}
         </View>
       </Touchable>

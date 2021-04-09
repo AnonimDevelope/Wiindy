@@ -1,5 +1,6 @@
 import * as actionTypes from "./actionTypes";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { DevSettings } from "react-native";
 
 export const setLocations = (locations) => ({
   type: actionTypes.SET_LOCATIONS,
@@ -9,6 +10,11 @@ export const setLocations = (locations) => ({
 export const setForecast = (forecast) => ({
   type: actionTypes.SET_FORECAST,
   forecast,
+});
+
+export const setSettings = (settings) => ({
+  type: actionTypes.SET_SETTINGS,
+  settings,
 });
 
 export const checkDone = () => ({ type: actionTypes.CHECK_DONE });
@@ -123,5 +129,42 @@ export const deleteLocation = (city, locations, forecasts) => {
       "locations",
       JSON.stringify({ data: locations })
     );
+  };
+};
+
+export const setDarkMode = (mode) => {
+  return (dispatch, getState) => {
+    const { settings } = getState();
+    const newSettings = { ...settings, darkMode: mode };
+    dispatch(setSettings(newSettings));
+    AsyncStorage.setItem("settings", JSON.stringify(newSettings));
+  };
+};
+
+export const setSimpleAnimations = (mode) => {
+  return async (dispatch, getState) => {
+    const { settings } = getState();
+    const newSettings = { ...settings, simpleAnimations: mode };
+    dispatch(setSettings(newSettings));
+    await AsyncStorage.setItem("settings", JSON.stringify(newSettings));
+    DevSettings.reload();
+  };
+};
+
+export const setUnits = (units) => {
+  return (dispatch, getState) => {
+    const { settings } = getState();
+    const newSettings = { ...settings, units: units };
+    dispatch(setSettings(newSettings));
+    AsyncStorage.setItem("settings", JSON.stringify(newSettings));
+  };
+};
+
+export const setLanguage = (lang) => {
+  return (dispatch, getState) => {
+    const { settings } = getState();
+    const newSettings = { ...settings, lang: lang };
+    dispatch(setSettings(newSettings));
+    AsyncStorage.setItem("settings", JSON.stringify(newSettings));
   };
 };

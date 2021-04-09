@@ -1,10 +1,17 @@
 import React, { memo } from "react";
 import { View, StyleSheet, FlatList, Dimensions } from "react-native";
 import ForecastItem from "./ForecastItem";
+import colors from "../../constants/colors";
 
-const Forecast = ({ forecast, daily, navigation }) => {
+const Forecast = ({ forecast, daily, navigation, isDark }) => {
   return (
-    <View style={styles.main}>
+    <View
+      style={
+        isDark
+          ? { ...styles.main, backgroundColor: colors.cardColor }
+          : styles.main
+      }
+    >
       {daily ? (
         <FlatList
           data={forecast}
@@ -15,6 +22,7 @@ const Forecast = ({ forecast, daily, navigation }) => {
           keyExtractor={(item) => `${item.dt}`}
           renderItem={(itemData) => (
             <ForecastItem
+              isDark={isDark}
               timestamp={itemData.item.dt}
               temperature={itemData.item.temp.day}
               status={itemData.item.weather[0].main}
@@ -43,6 +51,7 @@ const Forecast = ({ forecast, daily, navigation }) => {
           windowSize={11}
           renderItem={(itemData) => (
             <ForecastItem
+              isDark={isDark}
               timestamp={itemData.item.dt}
               temperature={itemData.item.temp}
               status={itemData.item.weather[0].main}
