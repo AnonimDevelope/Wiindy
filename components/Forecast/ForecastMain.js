@@ -13,6 +13,7 @@ const ForecastMain = ({
   iconId,
   id,
   isDark,
+  isImperial,
 }) => {
   const icon = getIcon(iconId, id);
 
@@ -44,7 +45,9 @@ const ForecastMain = ({
               : styles.temperature
           }
         >
-          {temperature.toFixed(0)}
+          {isImperial
+            ? (temperature * 1.8 + 32).toFixed(0)
+            : temperature.toFixed(0)}
         </Text>
         <Text
           style={
@@ -53,7 +56,7 @@ const ForecastMain = ({
               : styles.celsius
           }
         >
-          °c
+          {isImperial ? "°F" : "°c"}
         </Text>
       </View>
       <Text

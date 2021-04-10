@@ -3,7 +3,7 @@ import { View, StyleSheet, FlatList, Dimensions } from "react-native";
 import ForecastItem from "./ForecastItem";
 import colors from "../../constants/colors";
 
-const Forecast = ({ forecast, daily, navigation, isDark }) => {
+const Forecast = ({ forecast, daily, navigation, isDark, isImperial }) => {
   return (
     <View
       style={
@@ -29,6 +29,7 @@ const Forecast = ({ forecast, daily, navigation, isDark }) => {
               daily={daily}
               iconId={itemData.item.weather[0].icon}
               id={itemData.item.weather[0].id}
+              isImperial={isImperial}
               onPress={() =>
                 navigation.navigate("Details", {
                   data: itemData.item,
@@ -58,6 +59,7 @@ const Forecast = ({ forecast, daily, navigation, isDark }) => {
               daily={daily}
               iconId={itemData.item.weather[0].icon}
               id={itemData.item.weather[0].id}
+              isImperial={isImperial}
               onPress={() =>
                 navigation.navigate("Details", {
                   data: itemData.item,

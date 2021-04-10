@@ -128,7 +128,7 @@ export default function App() {
         await BackgroundFetch.registerTaskAsync(TASK_NAME, {
           startOnBoot: true,
           stopOnTerminate: false,
-          minimumInterval: 6000,
+          //minimumInterval: 6000,
         });
       } catch (err) {
         throw new Error(err);
@@ -163,7 +163,7 @@ export default function App() {
       translucent={true}
       isLoaded={fontsLoaded && isInitialFetchgDone}
       logoImage={require("./assets/weather-icon.png")}
-      backgroundColor={"#44B8EC"}
+      backgroundColor={"#F3F9FE"}
       logoHeight={150}
       logoWidth={150}
     >

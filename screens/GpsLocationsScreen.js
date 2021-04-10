@@ -25,7 +25,6 @@ const GpsLocationsScreen = ({ navigation }) => {
     await askForPermission();
     if (permission || permission.status === "granted") {
       const location = await Location.getCurrentPositionAsync({});
-      console.log(location);
       return location.coords;
     } else {
       setIsLoading(false);

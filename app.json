@@ -1,14 +1,14 @@
 {
   "expo": {
-    "name": "weatherio",
-    "slug": "weatherio",
+    "name": "wiindy",
+    "slug": "wiindy",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "splash": {
-      "image": "./assets/splash.png",
+      "image": "./assets/splashx.png",
       "resizeMode": "contain",
-      "backgroundColor": "#44B8EC"
+      "backgroundColor": "#F3F9FE"
     },
     "updates": {
       "fallbackToCacheTimeout": 0

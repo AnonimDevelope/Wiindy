@@ -10,6 +10,8 @@ const LocationsScreen = ({ navigation }) => {
   const locations = useSelector((state) => state.locations);
   const forecasts = useSelector((state) => state.forecast);
   const isDark = useSelector((state) => state.settings.darkMode);
+  const isImperial =
+    useSelector((state) => state.settings.units) === "imperial";
 
   const dispatch = useDispatch();
 
@@ -28,6 +30,7 @@ const LocationsScreen = ({ navigation }) => {
         renderItem={(itemData) => (
           <LocationItem
             isDark={isDark}
+            isImperial={isImperial}
             location={`${itemData.item.city}, ${itemData.item.country}`}
             currentForecast={
               forecasts.find((item) => item.city === itemData.item.city).current
@@ -50,7 +53,7 @@ const LocationsScreen = ({ navigation }) => {
         )}
       />
     );
-  }, [forecasts, isDark]);
+  }, [forecasts, isDark, isImperial]);
 
   return (
     <View style={isDark ? styles.screenDark : styles.screen}>

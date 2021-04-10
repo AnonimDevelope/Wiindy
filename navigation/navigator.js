@@ -115,7 +115,7 @@ export const NativeForecastScreen = ({ isDark }) => (
     }}
   >
     <NativeForecastStack.Screen
-      name="Weatherio"
+      name="Wiindy"
       options={({ navigation }) => ({
         headerRight: () => (
           <Menu onPressSettings={() => navigation.navigate("Settings")} />
@@ -141,7 +141,7 @@ const ForecastStack = createStackNavigator();
 const ForecastStackScreen = ({ isDark }) => (
   <ForecastStack.Navigator screenOptions={defaultStackOptions}>
     <ForecastStack.Screen
-      name="Weatherio"
+      name="Wiindy"
       options={({ navigation }) => ({
         headerRight: () => (
           <Menu onPressSettings={() => navigation.navigate("Settings")} />

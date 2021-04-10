@@ -14,6 +14,7 @@ const ForecastItem = ({
   iconId,
   onPress,
   isDark,
+  isImperial,
 }) => {
   const date = new Date(timestamp * 1000);
   const hours = date.getHours();
@@ -71,7 +72,9 @@ const ForecastItem = ({
                   : styles.temp
               }
             >
-              {temperature.toFixed(0)}
+              {isImperial
+                ? (temperature * 1.8 + 32).toFixed(0)
+                : temperature.toFixed(0)}
             </Text>
             <Text
               style={
@@ -80,7 +83,7 @@ const ForecastItem = ({
                   : styles.itemText
               }
             >
-              °c
+              {isImperial ? "°F" : "°c"}
             </Text>
           </View>
           {icon.animate === true ? (

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useLayoutEffect } from "react";
 import { View, StyleSheet, Text } from "react-native";
 import { useSelector } from "react-redux";
 import colors from "../constants/colors";
@@ -6,10 +6,21 @@ import ForecastDetails from "../components/Forecast/ForecastDetails";
 import { ScrollView } from "react-native-gesture-handler";
 import i18n from "i18n-js";
 
-const ForecastDetailsScreen = ({ route }) => {
+const getSpeedUnit = (isImperial) => (isImperial ? " mph" : " m/s");
+const getTempUnit = (isImperial) => (isImperial ? " °F" : " °c");
+
+const ForecastDetailsScreen = ({ route, navigation }) => {
   const forecast = route.params.data;
   const isDaily = route.params.daily;
   const isDark = useSelector((state) => state.settings.darkMode);
+  const isImperial =
+    useSelector((state) => state.settings.units) === "imperial";
+
+  React.useLayoutEffect(() => {
+    navigation.setOptions({
+      title: i18n.t("details.title"),
+    });
+  }, [navigation]);
 
   if (isDaily) {
     const sunsetDate = new Date(forecast.sunset * 1000);
@@ -39,25 +50,43 @@ const ForecastDetailsScreen = ({ route }) => {
           {transformedDate}
         </Text>
         <ForecastDetails
-          leftIconName="white-balance-sunny"
-          leftLabel={i18n.t("details.temperatureDay")}
-          leftValue={forecast.temp.day}
+          leftIconName="thermometer"
+          leftLabel={i18n.t("details.temperatureDay") + getTempUnit(isImperial)}
+          leftValue={
+            isImperial
+              ? (forecast.temp.day * 1.8 + 32).toFixed(2)
+              : forecast.temp.day
+          }
           centerIconName="weather-night"
-          centerLabel={i18n.t("details.temperatureNight")}
-          centerValue={forecast.temp.night}
-          rightLabel={i18n.t("details.feelsLikeDay")}
-          rightIconName="thermometer"
-          rightValue={forecast.feels_like.day}
+          centerLabel={
+            i18n.t("details.temperatureNight") + getTempUnit(isImperial)
+          }
+          centerValue={
+            isImperial
+              ? (forecast.temp.night * 1.8 + 32).toFixed(2)
+              : forecast.temp.night
+          }
+          rightLabel={i18n.t("details.feelsLikeDay") + getTempUnit(isImperial)}
+          rightIconName="white-balance-sunny"
+          rightValue={
+            isImperial
+              ? (forecast.feels_like.day * 1.8 + 32).toFixed(2)
+              : forecast.feels_like.day
+          }
           isDark={isDark}
         />
         <ForecastDetails
           leftIconName="weather-windy"
-          leftLabel={i18n.t("forecast.windSpeed")}
-          leftValue={forecast.wind_speed}
+          leftLabel={i18n.t("forecast.windSpeed") + getSpeedUnit(isImperial)}
+          leftValue={
+            isImperial
+              ? (forecast.wind_speed * 2.23694).toFixed(2)
+              : forecast.wind_speed
+          }
           centerIconName="cloud-outline"
-          centerLabel={i18n.t("forecast.cloudiness")}
+          centerLabel={i18n.t("forecast.cloudiness") + " %"}
           centerValue={forecast.clouds}
-          rightLabel={i18n.t("forecast.humidity")}
+          rightLabel={i18n.t("forecast.humidity") + " %"}
           rightIconName="water-percent"
           rightValue={forecast.humidity}
           isDark={isDark}
@@ -67,7 +96,7 @@ const ForecastDetailsScreen = ({ route }) => {
           leftLabel={i18n.t("details.sunrise")}
           leftValue={sunrise}
           centerIconName="arrow-collapse-down"
-          centerLabel={i18n.t("details.pressure")}
+          centerLabel={i18n.t("details.pressure") + " hPa"}
           centerValue={forecast.clouds}
           rightLabel={i18n.t("details.sunset")}
           rightIconName="weather-sunset-down"
@@ -122,24 +151,34 @@ const ForecastDetailsScreen = ({ route }) => {
       </Text>
       <ForecastDetails
         leftIconName="white-balance-sunny"
-        leftLabel={i18n.t("details.temperature")}
-        leftValue={forecast.temp}
+        leftLabel={i18n.t("details.temperature") + getTempUnit(isImperial)}
+        leftValue={
+          isImperial ? (forecast.temp * 1.8 + 32).toFixed(2) : forecast.temp
+        }
         centerIconName="arrow-collapse-down"
-        centerLabel={i18n.t("details.pressure")}
+        centerLabel={i18n.t("details.pressure") + " hPa"}
         centerValue={forecast.pressure}
-        rightLabel={i18n.t("details.feelsLike")}
+        rightLabel={i18n.t("details.feelsLike") + getTempUnit(isImperial)}
         rightIconName="thermometer"
-        rightValue={forecast.feels_like}
+        rightValue={
+          isImperial
+            ? (forecast.feels_like * 1.8 + 32).toFixed(2)
+            : forecast.feels_like
+        }
         isDark={isDark}
       />
       <ForecastDetails
         leftIconName="weather-windy"
-        leftLabel={i18n.t("forecast.windSpeed")}
-        leftValue={forecast.wind_speed}
+        leftLabel={i18n.t("forecast.windSpeed") + getSpeedUnit(isImperial)}
+        leftValue={
+          isImperial
+            ? (forecast.wind_speed * 2.23694).toFixed(2)
+            : forecast.wind_speed
+        }
         centerIconName="cloud-outline"
-        centerLabel={i18n.t("forecast.cloudiness")}
+        centerLabel={i18n.t("forecast.cloudiness") + " %"}
         centerValue={forecast.clouds}
-        rightLabel={i18n.t("forecast.humidity")}
+        rightLabel={i18n.t("forecast.humidity") + " %"}
         rightIconName="water-percent"
         rightValue={forecast.humidity}
         isDark={isDark}

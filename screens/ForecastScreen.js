@@ -20,6 +20,8 @@ import Forecast from "../components/Forecast/Forecast";
 import colors from "../constants/colors";
 import IconButton from "../components/UI/IconButton";
 
+const getSpeedUnit = (isImperial) => (isImperial ? " mph" : " m/s");
+
 const ForecastScreen = ({ route, navigation }) => {
   const { location } = route.params;
 
@@ -34,6 +36,7 @@ const ForecastScreen = ({ route, navigation }) => {
   const forecast = forecasts.find((item) => item.city === location.city);
 
   const isDark = settings.darkMode;
+  const isImperial = settings.units === "imperial";
 
   const deleteNotifLocation = async () => {
     const notifLocations = await AsyncStorage.getItem("notifLocations");
@@ -106,6 +109,7 @@ const ForecastScreen = ({ route, navigation }) => {
 
   React.useLayoutEffect(() => {
     navigation.setOptions({
+      title: i18n.t("forecast.title"),
       headerRight: () =>
         isNotifEnabled ? (
           <IconButton
@@ -171,6 +175,7 @@ const ForecastScreen = ({ route, navigation }) => {
           iconId={forecast.current.weather[0].icon}
           id={forecast.current.weather[0].id}
           isDark={isDark}
+          isImperial={isImperial}
         />
         <View
           style={settings.simpleAnimations ? styles.moreNative : styles.more}
@@ -183,6 +188,7 @@ const ForecastScreen = ({ route, navigation }) => {
             forecast={forecast.daily}
             navigation={navigation}
             isDark={isDark}
+            isImperial={isImperial}
           />
           <Text style={isDark ? styles.headingDark : styles.heading}>
             {i18n.t("forecast.hourly")}
@@ -192,6 +198,7 @@ const ForecastScreen = ({ route, navigation }) => {
               forecast={forecast.hourly}
               navigation={navigation}
               isDark={isDark}
+              isImperial={isImperial}
             />
           )}
           <Text style={isDark ? styles.headingDark : styles.heading}>
@@ -199,16 +206,23 @@ const ForecastScreen = ({ route, navigation }) => {
           </Text>
           {isAnimationDone && (
             <ForecastDetails
-              leftIconName="weather-windy"
-              leftLabel={i18n.t("forecast.windSpeed")}
-              leftValue={forecast.current.wind_speed}
-              centerIconName="cloud-outline"
-              centerLabel={i18n.t("forecast.cloudiness")}
-              centerValue={forecast.current.clouds}
-              rightLabel={i18n.t("forecast.humidity")}
+              centerIconName="weather-windy"
+              centerLabel={
+                i18n.t("forecast.windSpeed") + getSpeedUnit(isImperial)
+              }
+              centerValue={
+                isImperial
+                  ? (forecast.current.wind_speed * 2.23694).toFixed(2)
+                  : forecast.current.wind_speed
+              }
+              leftIconName="cloud-outline"
+              leftLabel={i18n.t("forecast.cloudiness") + " %"}
+              leftValue={forecast.current.clouds}
+              rightLabel={i18n.t("forecast.humidity") + " %"}
               rightIconName="water-percent"
               rightValue={forecast.current.humidity}
               isDark={isDark}
+              isImperial={isImperial}
             />
           )}
         </View>

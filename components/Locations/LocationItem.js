@@ -13,6 +13,7 @@ const LocationItem = ({
   currentForecast,
   onDelete,
   isDark,
+  isImperial,
 }) => {
   const [isDeleteShow, setIsDeleteShow] = useState(false);
 
@@ -90,7 +91,10 @@ const LocationItem = ({
                       : styles.temperature
                   }
                 >
-                  {currentForecast.temp.toFixed(0)}°c
+                  {isImperial
+                    ? (currentForecast.temp * 1.8 + 32).toFixed(0)
+                    : currentForecast.temp.toFixed(0)}
+                  {isImperial ? " °F" : " °c"}
                 </Text>
                 <Icon />
               </React.Fragment>

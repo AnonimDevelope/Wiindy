@@ -11,6 +11,7 @@ export default {
       buttonText: "Cities near you",
     },
     forecast: {
+      title: "Weather",
       daily: "Daily",
       hourly: "Hourly",
       details: "Details",
@@ -19,6 +20,7 @@ export default {
       humidity: "Humidity",
     },
     details: {
+      title: "Details",
       temperatureDay: "Temperature (Day)",
       temperatureNight: "Temperature (Night)",
       feelsLikeDay: "Feels like (Day)",
@@ -40,6 +42,7 @@ export default {
       saturday: "Saturday",
     },
     settings: {
+      title: "Settings",
       darkMode: "Dark Mode",
       darkModeDesc: "Off | On",
       animations: "Optimized animations",
@@ -67,6 +70,7 @@ export default {
       buttonText: "Orașele din apropiere",
     },
     forecast: {
+      title: "Vremea",
       daily: "Zilnic",
       hourly: "Orar",
       details: "Detalii",
@@ -75,6 +79,7 @@ export default {
       humidity: "Umiditate",
     },
     details: {
+      title: "Detalii",
       temperatureDay: "Temperatura (Zi)",
       temperatureNight: "Temperatura (Noapte)",
       feelsLikeDay: "Se simte ca",
@@ -96,6 +101,7 @@ export default {
       saturday: "Sâmbătă",
     },
     settings: {
+      title: "Setări",
       darkMode: "Mod întunecat",
       darkModeDesc: "Oprit | Pornit",
       animations: "Animații optimizate",
@@ -123,6 +129,7 @@ export default {
       buttonText: "Города рядом",
     },
     forecast: {
+      title: "Погода",
       daily: "Ежедневно",
       hourly: "Ежечасно",
       details: "Подробности",
@@ -131,6 +138,7 @@ export default {
       humidity: "Влажность",
     },
     details: {
+      title: "Подробности",
       temperatureDay: "Температура (день)",
       temperatureNight: "Температура (ночь)",
       feelsLikeDay: "Ощущается как (день)",
@@ -152,6 +160,7 @@ export default {
       saturday: "Суббота",
     },
     settings: {
+      title: "Настройки",
       darkMode: "Темный режим",
       darkModeDesc: "Выкл | Вкл",
       animations: "Оптимизированные анимации",
