@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { View, StyleSheet } from "react-native";
 import colors from "../constants/colors";
 import { List, Switch } from "react-native-paper";
@@ -10,21 +10,28 @@ import {
   setUnits,
   setLanguage,
 } from "../store/actions/actions";
+import Activity from "../components/UI/Activity";
+import i18n from "i18n-js";
 
 const SettingsScreen = () => {
+  const [isLoading, setIsLoading] = useState(false);
   const settings = useSelector((state) => state.settings);
 
   const dispatch = useDispatch();
+
+  if (isLoading) {
+    return <Activity />;
+  }
 
   return (
     <View style={settings.darkMode ? styles.screenDark : styles.screen}>
       <List.Section>
         {/* <List.Subheader>Some title</List.Subheader> */}
         <List.Item
-          title="Dark Mode"
+          title={i18n.t("settings.darkMode")}
           titleStyle={settings.darkMode && { color: "white" }}
           descriptionStyle={settings.darkMode && { color: "white" }}
-          description="auto | on"
+          description={i18n.t("settings.darkModeDesc")}
           left={() => (
             <List.Icon
               icon="theme-light-dark"
@@ -39,8 +46,8 @@ const SettingsScreen = () => {
           )}
         />
         <List.Item
-          title="Optimized animations"
-          description="Smoother experience"
+          title={i18n.t("settings.animations")}
+          description={i18n.t("settings.animationsDesc")}
           titleStyle={settings.darkMode && { color: "white" }}
           descriptionStyle={settings.darkMode && { color: "white" }}
           left={() => (
@@ -59,8 +66,8 @@ const SettingsScreen = () => {
           )}
         />
         <List.Item
-          title="Units"
-          description="Used units system"
+          title={i18n.t("settings.units")}
+          description={i18n.t("settings.unitsDesc")}
           titleStyle={settings.darkMode && { color: "white" }}
           descriptionStyle={settings.darkMode && { color: "white" }}
           left={() => (
@@ -76,14 +83,20 @@ const SettingsScreen = () => {
               }
               onValueChange={(itemValue) => dispatch(setUnits(itemValue))}
             >
-              <Picker.Item label="Metric" value="metric" />
-              <Picker.Item label="Imperial" value="imperial" />
+              <Picker.Item
+                label={i18n.t("settings.unitsMetric")}
+                value="metric"
+              />
+              <Picker.Item
+                label={i18n.t("settings.unitsImperial")}
+                value="imperial"
+              />
             </Picker>
           )}
         />
         <List.Item
-          title="Language"
-          description="Interface language"
+          title={i18n.t("settings.language")}
+          description={i18n.t("settings.languageDesc")}
           titleStyle={settings.darkMode && { color: "white" }}
           descriptionStyle={settings.darkMode && { color: "white" }}
           left={() => (
@@ -97,11 +110,14 @@ const SettingsScreen = () => {
                   ? { width: 120, color: "white" }
                   : { width: 120 }
               }
-              onValueChange={(itemValue) => dispatch(setLanguage(itemValue))}
+              onValueChange={(itemValue) => {
+                setIsLoading(true);
+                dispatch(setLanguage(itemValue));
+              }}
             >
-              <Picker.Item label="English" value="eng" />
-              <Picker.Item label="Romanian" value="ro" />
-              <Picker.Item label="Russian" value="ru" />
+              <Picker.Item label={i18n.t("settings.languageEn")} value="en" />
+              <Picker.Item label={i18n.t("settings.languageRo")} value="ro" />
+              <Picker.Item label={i18n.t("settings.languageRu")} value="ru" />
             </Picker>
           )}
         />

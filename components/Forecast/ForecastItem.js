@@ -4,6 +4,7 @@ import LottieView from "lottie-react-native";
 import colors from "../../constants/colors";
 import getIcon from "../../assets/lottie/getIcon";
 import Touchable from "../UI/Touchable";
+import i18n from "i18n-js";
 
 const ForecastItem = ({
   temperature,
@@ -29,17 +30,17 @@ const ForecastItem = ({
   const fullDate = `${day}.${month}.${year}`;
 
   const weekDays = [
-    "Sunday",
-    "Monday",
-    "Tuesday",
-    "Wednesday",
-    "Thursday",
-    "Friday",
-    "Saturday",
+    i18n.t("weekDays.sunday"),
+    i18n.t("weekDays.monday"),
+    i18n.t("weekDays.tuesday"),
+    i18n.t("weekDays.wednesday"),
+    i18n.t("weekDays.thursday"),
+    i18n.t("weekDays.friday"),
+    i18n.t("weekDays.saturday"),
   ];
   const currentWeekDay = weekDays[date.getDay()];
 
-  const icon = getIcon(iconId, id, true);
+  const icon = getIcon(iconId, id, true, isDark);
 
   return (
     <React.Fragment>
@@ -92,15 +93,27 @@ const ForecastItem = ({
             />
           )}
           {daily ? (
-            <Text
-              style={
-                isDark
-                  ? { ...styles.itemTextDaily, color: colors.whiteGray }
-                  : styles.itemTextDaily
-              }
-            >
-              {currentWeekDay}, {day}
-            </Text>
+            <View style={{ flexDirection: "row" }}>
+              <Text
+                numberOfLines={1}
+                style={
+                  isDark
+                    ? { ...styles.itemTextDaily, color: colors.whiteGray }
+                    : styles.itemTextDaily
+                }
+              >
+                {currentWeekDay},
+              </Text>
+              <Text
+                style={
+                  isDark
+                    ? { ...styles.itemTextDaily, color: colors.whiteGray }
+                    : styles.itemTextDaily
+                }
+              >
+                {" " + day}
+              </Text>
+            </View>
           ) : (
             <Text
               style={
@@ -168,6 +181,7 @@ const styles = StyleSheet.create({
     fontFamily: "lexend-regular",
     color: colors.mainTextColor,
     fontSize: 14,
+    maxWidth: 75,
   },
 });
 

@@ -12,6 +12,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { getForecast } from "../store/actions/actions";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import i18n from "i18n-js";
 
 import ForecastMain from "../components/Forecast/ForecastMain";
 import ForecastDetails from "../components/Forecast/ForecastDetails";
@@ -164,7 +165,7 @@ const ForecastScreen = ({ route, navigation }) => {
         )}
         <ForecastMain
           temperature={forecast.current.temp}
-          status={forecast.current.weather[0].main}
+          status={forecast.current.weather[0].description}
           countryCode={forecast.countryCode}
           city={forecast.city}
           iconId={forecast.current.weather[0].icon}
@@ -175,7 +176,7 @@ const ForecastScreen = ({ route, navigation }) => {
           style={settings.simpleAnimations ? styles.moreNative : styles.more}
         >
           <Text style={isDark ? styles.headingDark : styles.heading}>
-            Daily
+            {i18n.t("forecast.daily")}
           </Text>
           <Forecast
             daily
@@ -184,7 +185,7 @@ const ForecastScreen = ({ route, navigation }) => {
             isDark={isDark}
           />
           <Text style={isDark ? styles.headingDark : styles.heading}>
-            Hourly
+            {i18n.t("forecast.hourly")}
           </Text>
           {isAnimationDone && (
             <Forecast
@@ -194,17 +195,17 @@ const ForecastScreen = ({ route, navigation }) => {
             />
           )}
           <Text style={isDark ? styles.headingDark : styles.heading}>
-            Details
+            {i18n.t("forecast.details")}
           </Text>
           {isAnimationDone && (
             <ForecastDetails
               leftIconName="weather-windy"
-              leftLabel="Wind Speed"
+              leftLabel={i18n.t("forecast.windSpeed")}
               leftValue={forecast.current.wind_speed}
               centerIconName="cloud-outline"
-              centerLabel="Cloudiness"
+              centerLabel={i18n.t("forecast.cloudiness")}
               centerValue={forecast.current.clouds}
-              rightLabel="Humidity"
+              rightLabel={i18n.t("forecast.humidity")}
               rightIconName="water-percent"
               rightValue={forecast.current.humidity}
               isDark={isDark}

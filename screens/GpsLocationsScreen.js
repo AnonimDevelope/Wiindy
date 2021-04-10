@@ -7,6 +7,7 @@ import { usePermissions } from "expo-permissions";
 import { useDispatch, useSelector } from "react-redux";
 import { setLocations, getForecast } from "../store/actions/actions";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import i18n from "i18n-js";
 
 import Activity from "../components/UI/Activity";
 import SearchItem from "../components/Locations/SearchItem";
@@ -119,7 +120,7 @@ const GpsLocationsScreen = ({ navigation }) => {
           )}
         />
       ) : (
-        <Button title="Get near cities" onPress={getCities} />
+        <Button title={i18n.t("gpsLocations.buttonText")} onPress={getCities} />
       )}
     </View>
   );

@@ -19,17 +19,27 @@ export const setSettings = (settings) => ({
 
 export const checkDone = () => ({ type: actionTypes.CHECK_DONE });
 
+export const fetchForecast = async (latitude, longitude, lang) => {
+  const response = await fetch(
+    `https://api.openweathermap.org/data/2.5/onecall?lat=${latitude}&lon=${longitude}&exclude=minutely&lang=${lang}&units=metric&appid=5b0815041cbc828c8ef3a2523c4b2eb3`
+  );
+
+  const data = await response.json();
+  return data;
+};
+
 export const getForecast = (location) => {
-  return async (dispatch) => {
+  return async (dispatch, getState) => {
+    const { settings } = getState();
     const value = await AsyncStorage.getItem("forecast");
     if (value) {
       const storageForecastArray = JSON.parse(value).data;
 
-      const response = await fetch(
-        `https://api.openweathermap.org/data/2.5/onecall?lat=${location.latitude}&lon=${location.longitude}&exclude=minutely&units=metric&appid=5b0815041cbc828c8ef3a2523c4b2eb3`
+      const data = await fetchForecast(
+        location.latitude,
+        location.longitude,
+        settings.lang
       );
-
-      const data = await response.json();
 
       const foundItem = storageForecastArray.find(
         (item) => item.city === location.city
@@ -50,11 +60,11 @@ export const getForecast = (location) => {
       AsyncStorage.setItem("forecast", JSON.stringify(modForecast));
       dispatch(setForecast(modForecast.data));
     } else {
-      const newResponse = await fetch(
-        `https://api.openweathermap.org/data/2.5/onecall?lat=${location.latitude}&lon=${location.longitude}&exclude=minutely&units=metric&appid=5b0815041cbc828c8ef3a2523c4b2eb3`
+      const newData = await fetchForecast(
+        location.latitude,
+        location.longitude,
+        settings.lang
       );
-
-      const newData = await newResponse.json();
       const newStorageForecast = {
         data: [
           {
@@ -78,17 +88,19 @@ const getTimeDiff = (forecastTime) => {
 };
 
 export const checkForecast = (forecastArr, instant) => {
-  return async (dispatch) => {
+  return async (dispatch, getState) => {
+    const { settings } = getState();
     const newForecast = [...forecastArr];
     let hasChanged = false;
     for (let index = 0; index < newForecast.length; index++) {
       const element = newForecast[index];
       const timeDiff = getTimeDiff(element.current.dt);
       if (timeDiff > 100 || instant === true) {
-        const response = await fetch(
-          `https://api.openweathermap.org/data/2.5/onecall?lat=${element.lat}&lon=${element.lon}&exclude=minutely&units=metric&appid=5b0815041cbc828c8ef3a2523c4b2eb3`
+        const data = await fetchForecast(
+          element.lat,
+          element.lon,
+          settings.lang
         );
-        const data = await response.json();
         newForecast[index] = {
           ...data,
           city: element.city,
@@ -161,10 +173,14 @@ export const setUnits = (units) => {
 };
 
 export const setLanguage = (lang) => {
-  return (dispatch, getState) => {
-    const { settings } = getState();
+  return async (dispatch, getState) => {
+    const { settings, forecast } = getState();
     const newSettings = { ...settings, lang: lang };
     dispatch(setSettings(newSettings));
-    AsyncStorage.setItem("settings", JSON.stringify(newSettings));
+    await AsyncStorage.setItem("settings", JSON.stringify(newSettings));
+    if (forecast.length > 0) {
+      await Promise.all([dispatch(checkForecast(forecast, true))]);
+    }
+    DevSettings.reload();
   };
 };

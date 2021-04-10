@@ -19,7 +19,8 @@ const LocationItem = ({
   const icon = getIcon(
     currentForecast.weather[0].icon,
     currentForecast.weather[0].id,
-    true
+    true,
+    isDark
   );
 
   const Icon = () =>

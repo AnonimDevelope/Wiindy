@@ -31,8 +31,9 @@ import * as TaskManager from "expo-task-manager";
 import * as Notifications from "expo-notifications";
 import * as Permissions from "expo-permissions";
 import { Provider as PaperProvider } from "react-native-paper";
-import colors from "./constants/colors";
+import i18n from "i18n-js";
 import { setStatusBarStyle } from "expo-status-bar";
+import translations from "./translations";
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const store = createStore(reducer, composeEnhancers(applyMiddleware(thunk)));
@@ -210,6 +211,9 @@ const ReduxAccess = ({ children, onCheckDone, onSetSettings }) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
+    i18n.translations = translations;
+    i18n.locale = settings.lang || "en";
+    i18n.fallbacks = true;
     onSetSettings(settings);
   }, [settings]);
 
@@ -247,7 +251,7 @@ const ReduxAccess = ({ children, onCheckDone, onSetSettings }) => {
           darkMode: false,
           simpleAnimations: false,
           units: "metric",
-          lang: "eng",
+          lang: "en",
         };
         onSetSettings(newSettings);
         dispatch(setSettings(newSettings));

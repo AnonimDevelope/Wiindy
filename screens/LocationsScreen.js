@@ -4,6 +4,7 @@ import { useSelector, useDispatch } from "react-redux";
 import colors from "../constants/colors";
 import LocationItem from "../components/Locations/LocationItem";
 import { checkForecast, deleteLocation } from "../store/actions/actions";
+import i18n from "i18n-js";
 
 const LocationsScreen = ({ navigation }) => {
   const locations = useSelector((state) => state.locations);
@@ -61,7 +62,7 @@ const LocationsScreen = ({ navigation }) => {
               : styles.emptyText
           }
         >
-          Swipe to search your city
+          {i18n.t("locations.emptyText")}
         </Text>
       ) : (
         list

@@ -16,6 +16,7 @@ import colors from "../constants/colors";
 import IconButton from "../components/UI/IconButton";
 import SearchItem from "../components/Locations/SearchItem";
 import Activity from "../components/UI/Activity";
+import i18n from "i18n-js";
 
 const SearchLocationScreen = ({ navigation }) => {
   const [searchValue, setSearchValue] = useState("");
@@ -94,10 +95,12 @@ const SearchLocationScreen = ({ navigation }) => {
     list = (
       <Text
         style={
-          isDark ? { ...styles.emptyText, color: "white" } : styles.emptyText
+          isDark
+            ? { ...styles.emptyText, color: colors.whiteGray }
+            : styles.emptyText
         }
       >
-        Search your City
+        {i18n.t("searchLocations.emptyText")}
       </Text>
     );
   }
@@ -125,7 +128,7 @@ const SearchLocationScreen = ({ navigation }) => {
           >
             <TextInput
               underlineColorAndroid="transparent"
-              placeholder="Search"
+              placeholder={i18n.t("searchLocations.search")}
               style={
                 isDark
                   ? { ...styles.headerSearch, color: "white" }

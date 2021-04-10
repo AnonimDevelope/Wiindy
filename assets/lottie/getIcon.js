@@ -1,6 +1,8 @@
-const getIcon = (iconId, id, isItem) => {
+const getIcon = (iconId, id, isItem, isDark) => {
   if (id === 531 || id === 522 || id === 521) {
-    if (isItem) {
+    if (isItem && isDark) {
+      return { icon: require("./gif/shower-dayDark.gif"), animate: true };
+    } else if (isItem) {
       return { icon: require("./gif/shower-day.gif"), animate: true };
     } else {
       return { icon: require("./shower-day.json"), animate: true };
@@ -24,21 +26,27 @@ const getIcon = (iconId, id, isItem) => {
       case "09n":
       case "10d":
       case "10n":
-        if (isItem) {
+        if (isItem && isDark) {
+          return { icon: require("./gif/rainDark.gif"), animate: true };
+        } else if (isItem) {
           return { icon: require("./gif/rain.gif"), animate: true };
         } else {
           return { icon: require("./rain.json"), animate: true };
         }
       case "11d":
       case "11n":
-        if (isItem) {
+        if (isItem && isDark) {
+          return { icon: require("./gif/stormDark.gif"), animate: true };
+        } else if (isItem) {
           return { icon: require("./gif/storm.gif"), animate: true };
         } else {
           return { icon: require("./storm.json"), animate: true };
         }
       case "13d":
       case "13n":
-        if (isItem) {
+        if (isItem && isDark) {
+          return { icon: require("./gif/snowDark.gif"), animate: true };
+        } else if (isItem) {
           return { icon: require("./gif/snow.gif"), animate: true };
         } else {
           return { icon: require("./snow.json"), animate: true };

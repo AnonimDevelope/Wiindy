@@ -4,6 +4,7 @@ import { useSelector } from "react-redux";
 import colors from "../constants/colors";
 import ForecastDetails from "../components/Forecast/ForecastDetails";
 import { ScrollView } from "react-native-gesture-handler";
+import i18n from "i18n-js";
 
 const ForecastDetailsScreen = ({ route }) => {
   const forecast = route.params.data;
@@ -39,36 +40,36 @@ const ForecastDetailsScreen = ({ route }) => {
         </Text>
         <ForecastDetails
           leftIconName="white-balance-sunny"
-          leftLabel="Temperature (Day)"
+          leftLabel={i18n.t("details.temperatureDay")}
           leftValue={forecast.temp.day}
           centerIconName="weather-night"
-          centerLabel="Temperature (night)"
+          centerLabel={i18n.t("details.temperatureNight")}
           centerValue={forecast.temp.night}
-          rightLabel="Feels like (Day)"
+          rightLabel={i18n.t("details.feelsLikeDay")}
           rightIconName="thermometer"
           rightValue={forecast.feels_like.day}
           isDark={isDark}
         />
         <ForecastDetails
           leftIconName="weather-windy"
-          leftLabel="Wind Speed"
+          leftLabel={i18n.t("forecast.windSpeed")}
           leftValue={forecast.wind_speed}
           centerIconName="cloud-outline"
-          centerLabel="Cloudiness"
+          centerLabel={i18n.t("forecast.cloudiness")}
           centerValue={forecast.clouds}
-          rightLabel="Humidity"
+          rightLabel={i18n.t("forecast.humidity")}
           rightIconName="water-percent"
           rightValue={forecast.humidity}
           isDark={isDark}
         />
         <ForecastDetails
           leftIconName="weather-sunset-up"
-          leftLabel="Sunrise"
+          leftLabel={i18n.t("details.sunrise")}
           leftValue={sunrise}
           centerIconName="arrow-collapse-down"
-          centerLabel="Pressure"
+          centerLabel={i18n.t("details.pressure")}
           centerValue={forecast.clouds}
-          rightLabel="Sunset"
+          rightLabel={i18n.t("details.sunset")}
           rightIconName="weather-sunset-down"
           rightValue={sunset}
           isDark={isDark}
@@ -81,25 +82,7 @@ const ForecastDetailsScreen = ({ route }) => {
                 : styles.labelText
             }
           >
-            Status:
-          </Text>
-          <Text
-            style={
-              isDark ? { ...styles.text, color: colors.whiteGray } : styles.text
-            }
-          >
-            {forecast.weather[0].main}
-          </Text>
-        </View>
-        <View style={styles.textContainer}>
-          <Text
-            style={
-              isDark
-                ? { ...styles.labelText, color: colors.whiteGray }
-                : styles.labelText
-            }
-          >
-            Description:
+            {i18n.t("details.description")}
           </Text>
           <Text
             style={
@@ -139,24 +122,24 @@ const ForecastDetailsScreen = ({ route }) => {
       </Text>
       <ForecastDetails
         leftIconName="white-balance-sunny"
-        leftLabel="Temperature"
+        leftLabel={i18n.t("details.temperature")}
         leftValue={forecast.temp}
         centerIconName="arrow-collapse-down"
-        centerLabel="Pressure"
+        centerLabel={i18n.t("details.pressure")}
         centerValue={forecast.pressure}
-        rightLabel="Feels like"
+        rightLabel={i18n.t("details.feelsLike")}
         rightIconName="thermometer"
         rightValue={forecast.feels_like}
         isDark={isDark}
       />
       <ForecastDetails
         leftIconName="weather-windy"
-        leftLabel="Wind Speed"
+        leftLabel={i18n.t("forecast.windSpeed")}
         leftValue={forecast.wind_speed}
         centerIconName="cloud-outline"
-        centerLabel="Cloudiness"
+        centerLabel={i18n.t("forecast.cloudiness")}
         centerValue={forecast.clouds}
-        rightLabel="Humidity"
+        rightLabel={i18n.t("forecast.humidity")}
         rightIconName="water-percent"
         rightValue={forecast.humidity}
         isDark={isDark}
@@ -169,25 +152,7 @@ const ForecastDetailsScreen = ({ route }) => {
               : styles.labelText
           }
         >
-          Status:{" "}
-        </Text>
-        <Text
-          style={
-            isDark ? { ...styles.text, color: colors.whiteGray } : styles.text
-          }
-        >
-          {forecast.weather[0].main}
-        </Text>
-      </View>
-      <View style={styles.textContainer}>
-        <Text
-          style={
-            isDark
-              ? { ...styles.labelText, color: colors.whiteGray }
-              : styles.labelText
-          }
-        >
-          Description:{" "}
+          {i18n.t("details.description")}
         </Text>
         <Text
           style={
