@@ -4,7 +4,7 @@ Wiindy is a minimalistic weather app built with React Native.
 
 ## Demo
 
-![Alt Text](https://media.giphy.com/media/vFKqnCdLPNOKc/giphy.gif).
+![Alt Text](https://github.com/AnonimDevelope/Wiindy/blob/e10a3763835a9f06481357aa284b48e2c0977201/assets/lottie/gif/rain.gif).
 
 You can check the demo with Expo Go [Here](https://expo.io/@razvan1322/projects/Wiindy) or download apk build [Here]().
 
