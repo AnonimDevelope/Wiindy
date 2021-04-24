@@ -7,6 +7,7 @@ import {
   Dimensions,
   RefreshControl,
   InteractionManager,
+  Platform,
 } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -231,7 +232,8 @@ const ForecastScreen = ({ route, navigation }) => {
   );
 };
 
-let margin = Dimensions.get("window").height - 720;
+let margin =
+  Dimensions.get("window").height - (Platform.OS === "ios" ? 720 : 680);
 if (margin < 0) {
   margin = 10;
 }

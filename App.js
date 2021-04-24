@@ -30,10 +30,14 @@ import * as BackgroundFetch from "expo-background-fetch";
 import * as TaskManager from "expo-task-manager";
 import * as Notifications from "expo-notifications";
 import * as Permissions from "expo-permissions";
-import { Provider as PaperProvider } from "react-native-paper";
+import {
+  DefaultTheme as PaperDefaultTheme,
+  Provider as PaperProvider,
+} from "react-native-paper";
 import i18n from "i18n-js";
 import { setStatusBarStyle } from "expo-status-bar";
 import translations from "./translations";
+import colors from "./constants/colors";
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const store = createStore(reducer, composeEnhancers(applyMiddleware(thunk)));
@@ -149,6 +153,15 @@ export default function App() {
     setStatusBarStyle("dark");
   }
 
+  const paperDarkTheme = {
+    ...PaperDefaultTheme,
+    colors: {
+      ...PaperDefaultTheme.colors,
+      text: colors.whiteGray,
+      surface: "#191d24",
+    },
+  };
+
   if (renderDefaultSplash) {
     return <AppLoading />;
   }
@@ -168,7 +181,9 @@ export default function App() {
           onSetSettings={(settings) => setSettings(settings)}
         >
           {fontsLoaded && isInitialFetchgDone && (
-            <PaperProvider>
+            <PaperProvider
+              theme={settings.darkMode ? paperDarkTheme : PaperDefaultTheme}
+            >
               <NavigationContainer theme={usingScheme}>
                 {settings.simpleAnimations ? (
                   <View

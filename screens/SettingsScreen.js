@@ -37,16 +37,17 @@ const SettingsScreen = ({ navigation }) => {
   return (
     <View style={settings.darkMode ? styles.screenDark : styles.screen}>
       <List.Section>
-        {/* <List.Subheader>Some title</List.Subheader> */}
         <List.Item
           title={i18n.t("settings.darkMode")}
-          titleStyle={settings.darkMode && { color: "white" }}
-          descriptionStyle={settings.darkMode && { color: "white" }}
+          titleStyle={settings.darkMode ? { color: colors.whiteGray } : null}
+          descriptionStyle={
+            settings.darkMode ? { color: colors.whiteGray } : null
+          }
           description={i18n.t("settings.darkModeDesc")}
           left={() => (
             <List.Icon
               icon="theme-light-dark"
-              color={settings.darkMode && "white"}
+              color={settings.darkMode && colors.whiteGray}
             />
           )}
           right={() => (
@@ -59,12 +60,14 @@ const SettingsScreen = ({ navigation }) => {
         <List.Item
           title={i18n.t("settings.animations")}
           description={i18n.t("settings.animationsDesc")}
-          titleStyle={settings.darkMode && { color: "white" }}
-          descriptionStyle={settings.darkMode && { color: "white" }}
+          titleStyle={settings.darkMode ? { color: colors.whiteGray } : null}
+          descriptionStyle={
+            settings.darkMode ? { color: colors.whiteGray } : null
+          }
           left={() => (
             <List.Icon
               icon="speedometer"
-              color={settings.darkMode && "white"}
+              color={settings.darkMode && colors.whiteGray}
             />
           )}
           right={() => (
@@ -79,17 +82,22 @@ const SettingsScreen = ({ navigation }) => {
         <List.Item
           title={i18n.t("settings.units")}
           description={i18n.t("settings.unitsDesc")}
-          titleStyle={settings.darkMode && { color: "white" }}
-          descriptionStyle={settings.darkMode && { color: "white" }}
+          titleStyle={settings.darkMode ? { color: colors.whiteGray } : null}
+          descriptionStyle={
+            settings.darkMode ? { color: colors.whiteGray } : null
+          }
           left={() => (
-            <List.Icon icon="ruler" color={settings.darkMode && "white"} />
+            <List.Icon
+              icon="ruler"
+              color={settings.darkMode && colors.whiteGray}
+            />
           )}
           right={() => (
             <Picker
               selectedValue={settings.units}
               style={
                 settings.darkMode
-                  ? { width: 120, color: "white" }
+                  ? { width: 120, color: colors.whiteGray }
                   : { width: 120 }
               }
               onValueChange={(itemValue) => dispatch(setUnits(itemValue))}
@@ -108,17 +116,22 @@ const SettingsScreen = ({ navigation }) => {
         <List.Item
           title={i18n.t("settings.language")}
           description={i18n.t("settings.languageDesc")}
-          titleStyle={settings.darkMode && { color: "white" }}
-          descriptionStyle={settings.darkMode && { color: "white" }}
+          titleStyle={settings.darkMode ? { color: colors.whiteGray } : null}
+          descriptionStyle={
+            settings.darkMode ? { color: colors.whiteGray } : null
+          }
           left={() => (
-            <List.Icon icon="translate" color={settings.darkMode && "white"} />
+            <List.Icon
+              icon="translate"
+              color={settings.darkMode && colors.whiteGray}
+            />
           )}
           right={() => (
             <Picker
               selectedValue={settings.lang}
               style={
                 settings.darkMode
-                  ? { width: 120, color: "white" }
+                  ? { width: 120, color: colors.whiteGray }
                   : { width: 120 }
               }
               onValueChange={(itemValue) => {
