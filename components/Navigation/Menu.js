@@ -4,6 +4,7 @@ import IconButton from "../UI/IconButton";
 import { Menu } from "react-native-paper";
 import { useSelector } from "react-redux";
 import colors from "../../constants/colors";
+import i18n from "i18n-js";
 
 const headerMenu = ({ onPressSettings }) => {
   const [isVisible, setIsVisible] = useState(false);
@@ -36,7 +37,7 @@ const headerMenu = ({ onPressSettings }) => {
     >
       <Menu.Item
         icon="cog"
-        title="Settings"
+        title={i18n.t("settings.title")}
         onPress={() => {
           onPressSettings();
           setIsVisible(false);
@@ -50,9 +51,5 @@ const headerMenu = ({ onPressSettings }) => {
     </Menu>
   );
 };
-
-// const styles = StyleSheet.create({
-
-// })
 
 export default headerMenu;

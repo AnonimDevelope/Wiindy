@@ -1,4 +1,4 @@
-import React, { useState, useLayoutEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { View, StyleSheet } from "react-native";
 import colors from "../constants/colors";
 import { List, Switch } from "react-native-paper";
@@ -16,8 +16,13 @@ import i18n from "i18n-js";
 const SettingsScreen = ({ navigation }) => {
   const [isLoading, setIsLoading] = useState(false);
   const settings = useSelector((state) => state.settings);
+  const lang = settings.lang;
 
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    setIsLoading(false);
+  }, [lang]);
 
   React.useLayoutEffect(() => {
     navigation.setOptions({

@@ -35,7 +35,7 @@ const ForecastScreen = ({ route, navigation }) => {
   const settings = useSelector((state) => state.settings);
   const forecast = forecasts.find((item) => item.city === location.city);
 
-  const isDark = settings.darkMode;
+  let isDark = settings.darkMode;
   const isImperial = settings.units === "imperial";
 
   const deleteNotifLocation = async () => {
@@ -231,7 +231,7 @@ const ForecastScreen = ({ route, navigation }) => {
   );
 };
 
-let margin = Dimensions.get("window").height - 682;
+let margin = Dimensions.get("window").height - 720;
 if (margin < 0) {
   margin = 10;
 }

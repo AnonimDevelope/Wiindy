@@ -23,7 +23,9 @@ const ForecastDetails = ({
     }
   >
     <View style={styles.sideContainer}>
-      <Text style={styles.value}>{leftValue}</Text>
+      <Text adjustsFontSizeToFit numberOfLines={1} style={styles.value}>
+        {leftValue}
+      </Text>
       <Icon
         name={leftIconName}
         size={35}
@@ -41,7 +43,9 @@ const ForecastDetails = ({
           : styles.centerContainer
       }
     >
-      <Text style={styles.value}>{centerValue}</Text>
+      <Text adjustsFontSizeToFit numberOfLines={1} style={styles.value}>
+        {centerValue}
+      </Text>
       <Icon
         name={centerIconName}
         size={35}
@@ -52,7 +56,9 @@ const ForecastDetails = ({
       </Text>
     </View>
     <View style={styles.sideContainer}>
-      <Text style={styles.value}>{rightValue}</Text>
+      <Text adjustsFontSizeToFit numberOfLines={1} style={styles.value}>
+        {rightValue}
+      </Text>
       <Icon
         name={rightIconName}
         size={35}
@@ -65,9 +71,9 @@ const ForecastDetails = ({
 
 const styles = StyleSheet.create({
   main: {
-    flex: 1,
+    //flex: 1,
     backgroundColor: "white",
-    maxHeight: 150,
+    minHeight: 150,
     borderRadius: 10,
     flexDirection: "row",
     marginVertical: 10,
@@ -77,6 +83,7 @@ const styles = StyleSheet.create({
     width: "30%",
     alignItems: "center",
     justifyContent: "space-evenly",
+    padding: 5,
   },
   centerContainer: {
     height: 150,
@@ -86,6 +93,7 @@ const styles = StyleSheet.create({
     borderLeftWidth: 2,
     alignItems: "center",
     justifyContent: "space-evenly",
+    padding: 5,
   },
   value: {
     fontSize: 40,
@@ -95,7 +103,6 @@ const styles = StyleSheet.create({
   label: {
     fontFamily: "lexend-semi-bold",
     color: colors.mainTextColor,
-    maxWidth: 100,
     textAlign: "center",
   },
   labelDark: {

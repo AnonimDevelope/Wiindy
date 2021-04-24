@@ -94,7 +94,7 @@ const LocationItem = ({
                   {isImperial
                     ? (currentForecast.temp * 1.8 + 32).toFixed(0)
                     : currentForecast.temp.toFixed(0)}
-                  {isImperial ? " °F" : " °c"}
+                  {isImperial ? "°F" : "°c"}
                 </Text>
                 <Icon />
               </React.Fragment>

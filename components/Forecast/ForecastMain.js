@@ -35,7 +35,6 @@ const ForecastMain = ({
         loop
         autoPlay
         style={styles.icon}
-        hardwareAccelerationAndroid
       />
       <View style={styles.temperatureContainer}>
         <Text

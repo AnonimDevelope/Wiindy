@@ -120,6 +120,11 @@ export const NativeForecastScreen = ({ isDark }) => (
         headerRight: () => (
           <Menu onPressSettings={() => navigation.navigate("Settings")} />
         ),
+        headerTitleStyle: {
+          fontSize: 37,
+          fontFamily: "caveat-semiBold",
+          color: "#8C8C8C",
+        },
       })}
     >
       {(props) => <LocationTabsScreen {...props} isDark={isDark} />}
@@ -146,6 +151,11 @@ const ForecastStackScreen = ({ isDark }) => (
         headerRight: () => (
           <Menu onPressSettings={() => navigation.navigate("Settings")} />
         ),
+        headerTitleStyle: {
+          fontSize: 35,
+          fontFamily: "caveat-semiBold",
+          color: "#8C8C8C",
+        },
       })}
     >
       {(props) => <LocationTabsScreen {...props} isDark={isDark} />}

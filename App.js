@@ -1,6 +1,6 @@
 import "react-native-gesture-handler";
 import React, { useEffect, useState } from "react";
-import { useColorScheme, View } from "react-native";
+import { View } from "react-native";
 import { createStore, applyMiddleware, compose } from "redux";
 import { Provider, useDispatch, useSelector } from "react-redux";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -116,6 +116,7 @@ export default function App() {
     "lexend-light": require("./assets/fonts/Lexend-Light.ttf"),
     "lexend-regular": require("./assets/fonts/Lexend-Regular.ttf"),
     "lexend-semi-bold": require("./assets/fonts/Lexend-SemiBold.ttf"),
+    "caveat-semiBold": require("./assets/fonts/Caveat-SemiBold.ttf"),
   });
 
   useEffect(() => {
@@ -124,15 +125,11 @@ export default function App() {
 
   useEffect(() => {
     RegisterBackgroundTask = async () => {
-      try {
-        await BackgroundFetch.registerTaskAsync(TASK_NAME, {
-          startOnBoot: true,
-          stopOnTerminate: false,
-          //minimumInterval: 6000,
-        });
-      } catch (err) {
-        throw new Error(err);
-      }
+      await BackgroundFetch.registerTaskAsync(TASK_NAME, {
+        startOnBoot: true,
+        stopOnTerminate: false,
+        minimumInterval: 3000,
+      });
     };
     RegisterBackgroundTask();
   }, []);
@@ -143,10 +140,8 @@ export default function App() {
     }, 50);
   }, []);
 
-  const scheme = useColorScheme();
-
   let usingScheme;
-  if (settings.darkMode || scheme === "dark") {
+  if (settings.darkMode) {
     usingScheme = DarkTheme;
     setStatusBarStyle("light");
   } else {

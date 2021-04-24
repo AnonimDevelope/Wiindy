@@ -1,5 +1,5 @@
-import React, { useLayoutEffect } from "react";
-import { View, StyleSheet, Text } from "react-native";
+import React from "react";
+import { View, StyleSheet, Text, Dimensions } from "react-native";
 import { useSelector } from "react-redux";
 import colors from "../constants/colors";
 import ForecastDetails from "../components/Forecast/ForecastDetails";
